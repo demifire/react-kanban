@@ -42,9 +42,9 @@ class ItemForm extends Component {
         </label>
         <label> Type:
           <select onChange={this.handleChange} name="type">
-            <option value="To-do">Consumable</option>
-            <option value="Doing">Weapon</option>
-            <option value="Done">Armor</option>
+            <option value="To-do">To-do</option>
+            <option value="Doing">Doing</option>
+            <option value="Done">Done</option>
           </select>
         </label>
         <input type="submit" value="Submit"/>
