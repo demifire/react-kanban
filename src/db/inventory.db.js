@@ -36,7 +36,7 @@ let itemsFromFakeDB = [{
   }
 ]
 
-let newId = 4
+let newId = 7
 
 export const getItemsFromFakeXHR = () => new Promise((resolve, reject) => {
   setTimeout( () => {

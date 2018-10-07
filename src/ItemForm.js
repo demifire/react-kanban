@@ -8,7 +8,7 @@ class ItemForm extends Component {
     this.state = {
       task: null,
       description: null,
-      type: null
+      type: 'To-do'
     }
   }
 
