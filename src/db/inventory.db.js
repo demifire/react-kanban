@@ -1,37 +1,37 @@
 let itemsFromFakeDB = [{
     id: 1,
-    name: 'A Large Healing Potion',
-    weight: 0.1,
+    task: 'Drink A Large Healing Potion',
+    description: 0.1,
     type: 'To-do'
   },
   {
     id: 2,
-    name: 'Wirts Leg',
-    weight: 10,
+    task: 'Wirts Leg',
+    description: 10,
     type: 'Doing'
   },
   {
     id: 3,
-    name: 'Dreamwalker Spaulders',
-    weight: 2,
+    task: 'Dreamwalker Spaulders',
+    description: 2,
     type: 'Done'
   },
   {
     id: 4,
-    name: 'A Large Healing Potion',
-    weight: 0.1,
+    task: 'A Large Healing Potion',
+    description: 0.1,
     type: 'To-do'
   },
   {
    id: 5,
-    name: 'A Large Healing Potion',
-    weight: 0.1,
+    task: 'A Large Healing Potion',
+    description: 0.1,
     type: 'Doing'
   },
   {                
     id: 6,
-    name: 'A Large Healing Potion',
-    weight: 0.1,
+    task: 'A Large Healing Potion',
+    description: 0.1,
     type: 'Done'
   }
 ]

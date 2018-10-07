@@ -6,8 +6,8 @@ class ItemForm extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      name: null,
-      weight: null,
+      task: null,
+      description: null,
       type: null
     }
   }
@@ -32,13 +32,13 @@ class ItemForm extends Component {
 
   render() {
     return (
-      <div className="Item">
+      <div className="ActionItem">
       <form onSubmit={this.handleSubmit}>
-        <label> Name:
-          <input onChange={this.handleChange} name="name" type="text"/>
+        <label> Task:
+          <input onChange={this.handleChange} name="task" type="text"/>
         </label> 
-        <label> Weight:
-          <input onChange={this.handleChange} name="weight" type="text"/>
+        <label> Description:
+          <input onChange={this.handleChange} name="description" type="text"/>
         </label>
         <label> Type:
           <select onChange={this.handleChange} name="type">

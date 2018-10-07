@@ -103,7 +103,7 @@ class App extends Component {
 }
 
 function ItemsList(props) {
-  return props.items.filter(item => item.type === 'To-do').map( item => <li onClick={ () => props.deleteItemById(item.id)}>{item.name}</li> )
+  return props.items.filter(item => item.type === 'To-do').map( item => <li onClick={ () => props.deleteItemById(item.id)}>{item.task}</li> )
 }
 
 function TodoList(props) {
@@ -111,7 +111,7 @@ function TodoList(props) {
 }
 
 function DoneList(props) {
-  return props.items.filter(item => item.type === 'Done').map( todo => <li onClick={ () => props.deleteTodoById(todo.id)}>{todo.name}</li> )
+  return props.items.filter(item => item.type === 'Done').map( item => <li onClick={ () => props.deleteItemdoById(item.id)}>{item.task}</li> )
 }
 
 
