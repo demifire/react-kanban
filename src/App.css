@@ -28,6 +28,10 @@
   font-size: large;
 }
 
+li {
+  list-style-type: none;
+}
+
 .List {
   display: flex;
   flex-direction: column;
