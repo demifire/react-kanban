@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import { getItemsFromFakeXHR, addItemToFakeXHR, deleteItemByIdFromFakeXHR } from './db/inventory.db';
-import { getTodoFromFakeXHR, addTodoToFakeXHR, deleteTodoByIdFromFakeXHR } from './db/todo.db';
 import ItemForm from './ItemForm';
 
 class App extends Component {
@@ -9,22 +8,14 @@ class App extends Component {
     super(props)
     this.state = {
       items: [],
-      todo: []
     }
-    this.addItem = this.addItem.bind(this);
-    this.updateStateFromDb = this.updateStateFromDb.bind(this);
-    this.deleteItemById= this.deleteItemById.bind(this);
-    this.addTodo = this.addTodo.bind(this);
-    this.updateTodoFromDb = this.updateTodoFromDb.bind(this);
-    this.deleteTodoById= this.deleteTodoById.bind(this);
   }
 
   componentDidMount() {
     this.updateStateFromDb();
-    this.updateTodoFromDb();
   }
 
-  updateStateFromDb() {
+  updateStateFromDb = () => {
     getItemsFromFakeXHR()
       .then( items => {
         this.setState({items}, () => {
@@ -33,63 +24,36 @@ class App extends Component {
       })
   }
 
-  addItem(item) {
+  addItem = (item) => {
     addItemToFakeXHR(item)
     .then( items => {
-      this.setState( {items })
+      this.setState( {items } )
     })
   }
 
-  deleteItemById(itemId) {
-    console.log('BALETED')
+  deleteItemById = (itemId) => {
     deleteItemByIdFromFakeXHR(itemId)
     .then( result => {
       this.updateStateFromDb()
     })
   }
 
-  updateTodoFromDb() {
-    getTodoFromFakeXHR()
-      .then( todo => {
-        this.setState({todo}, () => {
-          console.log('this.state', this.state)
-        })
-      })
-  }
-
-  addTodo(todo) {
-    addTodoToFakeXHR(todo)
-    .then( todo => {
-      this.setState( {todo })
-    })
-  }
-
-  deleteTodoById(todoId) {
-    console.log('BALETED')
-    deleteTodoByIdFromFakeXHR(todoId)
-    .then( result => {
-      this.updateTodoFromDb()
-    })
-  }
-
   render() {
     const { items } = this.state
-    const { todo } = this.state
 
     return (
       <div className="App">
         <header className="App-header">
-          <h1 className="App-title">React Kaban</h1>
+          <h1 className="App-title">Reack Attak</h1>
         </header>
         <div id="App-content">
         <ul>
         <h1 className="myh1">To do</h1>
-          <ItemsList deleteItemById={this.deleteItemById} items={items}/>
+          <TodoList deleteItemById={this.deleteItemById} items={items}/>
         </ul>
         <ul>
         <h1 className="myh1">Doing</h1>
-          <TodoList deleteTodoById={this.deleteTodoById} todo={todo}/>
-          {/* <ItemsList deleteItemById={this.deleteItemById} items={items}/> */}
+          <DoingList deleteItemById={this.deleteItemById} items={items}/>
         </ul>
         <ul>
         <h1 className="myh1">Done</h1>
@@ -102,17 +66,33 @@ class App extends Component {
   }
 }
 
-function ItemsList(props) {
-  return props.items.filter(item => item.type === 'To-do').map( item => <li onClick={ () => props.deleteItemById(item.id)}>{item.task}</li> )
+function TodoList(props) {
+  return props.items.filter(item => item.type === 'To-do').map( item => <li className="task" onClick={ () => GetDescription(item.id)}>{item.task}<span onClick={ () => props.deleteItemById(item.id)} className="x">x</span><div id={item.id} className="desc">{item.description}</div></li> )
 }
 
-function TodoList(props) {
-  return props.todo.map( todo => <li onClick={ () => props.deleteTodoById(todo.id)}>{todo.name}</li> )
+function DoingList(props) {
+  return props.items.filter(item => item.type === 'Doing').map( item => <li className="task" onClick={ () => GetDescription(item.id)}>{item.task}<span onClick={ () => props.deleteItemById(item.id)} className="x">x</span><div id={item.id} className="desc">{item.description}</div></li> )
 }
 
 function DoneList(props) {
-  return props.items.filter(item => item.type === 'Done').map( item => <li onClick={ () => props.deleteItemdoById(item.id)}>{item.task}</li> )
+  // The original code
+  // return props.items.filter(item => item.type === 'Done').map( item => <li onClick={ () => props.deleteItemdoById(item.id)}>{item.task}<span class="x">x</span><div class="desc">{item.description}</div></li> )
+  return props.items.filter(item => item.type === 'Done').map( item => <li className="task" onClick={ () => GetDescription(item.id)}>{item.task}<span onClick={ () => props.deleteItemById(item.id)} className="x">x</span><div id={item.id} className="desc">{item.description}</div></li> )
 }
 
+function GetDescription(itemID){
+  let allDescItems = document.getElementsByClassName('desc');
+  let toggleThis;
+  for (var i = 0; i < allDescItems.length; i++){
+    if ( allDescItems[i].id == itemID ) {
+      toggleThis = allDescItems[i];
+      if ( toggleThis.style.display === 'block'){
+        toggleThis.style.display = 'none'
+      } else {
+        toggleThis.style.display = 'block'
+      }
+    }
+  }
+}
 
 export default App;
