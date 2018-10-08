@@ -2,12 +2,105 @@ import React, { Component } from 'react';
 import './App.css';
 import { getItemsFromFakeXHR, addItemToFakeXHR, deleteItemByIdFromFakeXHR } from './db/inventory.db';
 import ItemForm from './ItemForm';
+import Card from './Card';
+import HTML5Backend from 'react-dnd-html5-backend'
+import { DragDropContext } from 'react-dnd'
+const update = require('immutability-helper');
 
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
       items: [],
+      cards: [
+        {
+          id: 1,
+          text: 'Write a cool JS library',
+        },
+        {
+          id: 2,
+          text: 'Make it generic enough',
+        },
+        {
+          id: 3,
+          text: 'Write README',
+        },
+        {
+          id: 4,
+          text: 'Create some examples',
+        },
+        {
+          id: 5,
+          text:
+            'Spam in Twitter and IRC to promote it (note that this element is taller than the others)',
+        },
+        {
+          id: 6,
+          text: '???',
+        },
+        {
+          id: 7,
+          text: 'PROFIT',
+        },
+        {
+          id: 8,
+          text: 'Write a cool JS library',
+        },
+        {
+          id: 9,
+          text: 'Make it generic enough',
+        },
+        {
+          id: 10,
+          text: 'Write README',
+        },
+        {
+          id: 11,
+          text: 'Create some examples',
+        },
+        {
+          id: 12,
+          text:
+            'Spam in Twitter and IRC to promote it (note that this element is taller than the others)',
+        },
+        {
+          id: 13,
+          text: '???',
+        },
+        {
+          id: 14,
+          text: 'PROFIT',
+        },
+        {
+          id: 15,
+          text: 'Write a cool JS library',
+        },
+        {
+          id: 16,
+          text: 'Make it generic enough',
+        },
+        {
+          id: 17,
+          text: 'Write README',
+        },
+        {
+          id: 18,
+          text: 'Create some examples',
+        },
+        {
+          id: 19,
+          text:
+            'Spam in Twitter and IRC to promote it (note that this element is taller than the others)',
+        },
+        {
+          id: 20,
+          text: '???',
+        },
+        {
+          id: 21,
+          text: 'PROFIT',
+        }
+      ]
     }
   }
 
@@ -38,6 +131,20 @@ class App extends Component {
     })
   }
 
+  moveCard = (dragIndex, hoverIndex) => {
+    const { cards } = this.state
+    const dragCard = cards[dragIndex]
+
+    this.setState(
+      update(this.state, {
+        cards: {
+          $splice: [[dragIndex, 1], [hoverIndex, 0, dragCard]],
+        },
+      }),
+    )
+  }
+
+
   render() {
     const { items } = this.state
 
@@ -46,7 +153,7 @@ class App extends Component {
         <header className="App-header">
           <h1 className="App-title">Reack Attak</h1>
         </header>
-        <div id="App-content">
+        <div className="App-content">
         <ul>
         <h1 className="myh1">To do</h1>
           <TodoList deleteItemById={this.deleteItemById} items={items}/>
@@ -61,6 +168,17 @@ class App extends Component {
         </ul>
         </div>
         <ItemForm addItem={this.addItem}/>
+        <div className="card-container">
+      {this.state.cards.map((card, i) => (
+        <Card
+          key={card.id}
+          index={i}
+          id={card.id}
+          text={card.text}
+          moveCard={this.moveCard}
+        />
+      ))}
+    </div>
       </div>
     );
   }
@@ -95,4 +213,4 @@ function GetDescription(itemID){
   }
 }
 
-export default App;
+export default DragDropContext(HTML5Backend)(App);

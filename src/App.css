@@ -14,7 +14,7 @@
   color: white;
 }
 
-#App-content {
+.App-content {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
