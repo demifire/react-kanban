@@ -25,19 +25,6 @@ const reorder = (list, startIndex, endIndex, destination, source) => {
     const [removed] = result.splice(temp2, 1);
     result.splice(temp, 0, removed)
 
-    // result[temp-1].id = fak[startIndex].id;
-    // result[temp2-1].id = temp;
-    // console.log(fak[startIndex], 'id should equal ' + temp)
-
-    // const temp2 = source.id;
-    // source.id = destination.id;
-    // destination.id = temp2;
-    // return result;
-
-    // const [removed2] = result.splice(startIndex, 1);
-    // result.splice(endIndex, 0, removed2);
-
-    console.log(result, 'wtf did the change occur?')
     return result;
 
 };
@@ -46,19 +33,12 @@ const reorder = (list, startIndex, endIndex, destination, source) => {
  * Moves an item from one list to another list.
  */
 const move = (source, destination, droppableSource, droppableDestination, actualID) => {
-    // console.log(droppableSource, 'dis da droppable Source');
-    // console.log(droppableDestination, 'dis da droppable Destination');
-    // console.log(source, 'dis da original array');
-    // console.log(destination, 'dis da destination array');
+
     const sourceClone = Array.from(source);
     const destClone = Array.from(destination);
     const [removed] = sourceClone.splice(droppableSource.index, 1);
-    // console.log(droppableSource, 'this is droppable source index and confusing me')
-    // console.log(removed, 'this is what is supposedly being removed')
     let changeType = source.find( item => item.id === actualID);
-    // console.log(changeType, 'dis supposed to be the actual array source crap');
     changeType.type = droppableDestination.droppableId;
-    // console.log(changeType.type, 'this is the changed type tho')
 
     destClone.splice(droppableDestination.index, 0, removed);
 
@@ -118,8 +98,6 @@ class App extends Component {
   onDragEnd = result => {
       const { source, destination } = result;
       const actualId = result.draggableId;
-
-      console.log(destination, 'dis destination')
 
       // dropped outside the list
       if (!destination) {
