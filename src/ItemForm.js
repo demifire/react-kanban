@@ -8,7 +8,7 @@ class ItemForm extends Component {
     this.state = {
       task: null,
       description: null,
-      type: 'To-do'
+      type: 'Todo'
     }
   }
 
@@ -42,7 +42,7 @@ class ItemForm extends Component {
         </label>
         <label> Type:
           <select onChange={this.handleChange} name="type">
-            <option value="To-do">To-do</option>
+            <option value="Todo">To-do</option>
             <option value="Doing">Doing</option>
             <option value="Done">Done</option>
           </select>

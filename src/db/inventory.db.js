@@ -2,7 +2,7 @@ let itemsFromFakeDB = [{
     id: 1,
     task: 'Taking a piss',
     description: 0.1,
-    type: 'To-do'
+    type: 'Todo'
   },
   {
     id: 2,
@@ -20,7 +20,7 @@ let itemsFromFakeDB = [{
     id: 4,
     task: 'Popping champagne',
     description: 0.1,
-    type: 'To-do'
+    type: 'Todo'
   },
   {
    id: 5,

@@ -40,7 +40,7 @@ const move = (source, destination, droppableSource, droppableDestination, actual
     let changeType = source.find( item => item.id === actualID);
     console.log(changeType, 'dis supposed to be the actual array source crap');
     changeType.type = droppableDestination.droppableId;
-    console.log(actualID)
+    // console.log(changeType.type, 'this is the changed type tho')
 
     destClone.splice(droppableDestination.index, 0, removed);
 
@@ -176,61 +176,56 @@ class App extends Component {
           <h1 className="App-title">Reack Attak</h1>
         </header>
         <div className="App-content">
+        <DragDropContext onDragEnd={this.onDragEnd}>
         <ul>
         <h1 className="myh1">To do</h1>
-          <TodoList deleteItemById={this.deleteItemById} items={items}/>
-        </ul>
-        <ul>
-        <h1 className="myh1">Doing</h1>
-          <DoingList deleteItemById={this.deleteItemById} items={items}/>
-        </ul>
-        <ul>
-        <h1 className="myh1">Done</h1>
-          <DoneList deleteItemById={this.deleteItemById} items={items}/>
-        </ul>
-        </div>
-        <ItemForm addItem={this.addItem}/>
-        <div className="App-content">
-        <DragDropContext onDragEnd={this.onDragEnd}>
                 <Droppable droppableId="Todo">
                     {(provided, snapshot) => (
                         <div
                             ref={provided.innerRef}
                             style={getListStyle(snapshot.isDraggingOver)}>
-                            <TestThis1 items={items}/> 
+                            <TestThis1 deleteItemById={this.deleteItemById} items={items}/> 
                             {provided.placeholder}
                         </div>
                     )}
                 </Droppable>
+                </ul>
+                <ul>
+        <h1 className="myh1">Doing</h1>
                 <Droppable droppableId="Doing">
                     {(provided, snapshot) => (
                         <div
                             ref={provided.innerRef}
                             style={getListStyle(snapshot.isDraggingOver)}>
-                            <TestThis2 items={items}/>
+                            <TestThis2 deleteItemById={this.deleteItemById} items={items}/>
                             {provided.placeholder}
                         </div>
                     )}
                 </Droppable>
+                </ul>
+                <ul>
+        <h1 className="myh1">Done</h1>
                 <Droppable droppableId="Done">
                     {(provided, snapshot) => (
                         <div
                             ref={provided.innerRef}
                             style={getListStyle(snapshot.isDraggingOver)}>
-                            <TestThis3 items={items}/> 
+                            <TestThis3 deleteItemById={this.deleteItemById} items={items}/> 
                             {provided.placeholder}
                         </div>
                     )}
                 </Droppable>
+            </ul>
             </DragDropContext>
         </div>
+        <ItemForm addItem={this.addItem}/>
       </div>
     );
   }
 }
 
 function TodoList(props) {
-  return props.items.filter(item => item.type === 'To-do').map( item => <li className="task" onClick={ () => GetDescription(item.id)}>{item.task}<span onClick={ () => props.deleteItemById(item.id)} className="x">x</span><div id={item.id} className="desc">{item.description}</div></li> )
+  return props.items.filter(item => item.type === 'Todo').map( item => <li className="task" onClick={ () => GetDescription(item.id)}>{item.task}<span onClick={ () => props.deleteItemById(item.id)} className="x">x</span><div id={item.id} className="desc">{item.description}</div></li> )
 }
 
 function DoingList(props) {
@@ -244,7 +239,8 @@ function DoneList(props) {
 }
 
 function TestThis1(props) {
-  return props.items.filter(item => item.type === 'To-do').map((item, index) => (
+  return props.items.filter(item => item.type === 'Todo').map((item, index) => (
+    <li className="task" onClick={ () => GetDescription(item.id)}>
     <Draggable
         key={item.id}
         draggableId={item.id}
@@ -259,15 +255,15 @@ function TestThis1(props) {
                     provided.draggableProps.style
                 )}>
                 {item.task}
-                {/* {console.log(item, 'FUCK AHHH')} */}
-            </div>
+                <span onClick={ () => props.deleteItemById(item.id)} className="x">x</span></div>
         )}
-    </Draggable>
+    </Draggable><div id={item.id} className="desc">{item.description}</div></li>
 ))
 }
 
 function TestThis2(props) {
   return props.items.filter(item => item.type === 'Doing').map((item, index) => (
+    <li className="task" onClick={ () => GetDescription(item.id)}>
     <Draggable
         key={item.id}
         draggableId={item.id}
@@ -282,14 +278,15 @@ function TestThis2(props) {
                     provided.draggableProps.style
                 )}>
                 {item.task}
-            </div>
+                <span onClick={ () => props.deleteItemById(item.id)} className="x">x</span></div>
         )}
-    </Draggable>
+    </Draggable><div id={item.id} className="desc">{item.description}</div></li>
 ))
 }
 
 function TestThis3(props) {
   return props.items.filter(item => item.type === 'Done').map((item, index) => (
+    <li className="task" onClick={ () => GetDescription(item.id)}>
     <Draggable
         key={item.id}
         draggableId={item.id}
@@ -304,9 +301,9 @@ function TestThis3(props) {
                     provided.draggableProps.style
                 )}>
                 {item.task}
-            </div>
+                <span onClick={ () => props.deleteItemById(item.id)} className="x">x</span></div>
         )}
-    </Draggable>
+    </Draggable><div id={item.id} className="desc">{item.description}</div></li>
 ))
 }
 

@@ -48,8 +48,8 @@ li {
 
 .x {
   font-family: 'Arial Narrow Bold', sans-serif;
-  font-size: 16px;
-  padding-left: 3px;
+  font-size: 20px;
+  margin-left: 20px;
   cursor: pointer;
   color: red;
   display: none;
