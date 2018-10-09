@@ -14,14 +14,32 @@ const getItems = (count, offset = 0) =>
     }));
 
 // a little function to help us with reordering the result
-const reorder = (list, startIndex, endIndex) => {
-    // console.log('these are the parameters, list, start index, and end index', list, startIndex, endIndex);
-    const result = Array.from(list);
-    // console.log(result, 'what is this again??')
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
+const reorder = (list, startIndex, endIndex, destination, source) => {
 
+    const result = Array.from(list);
+
+    let fak = result.filter(item => item.type === destination.droppableId);
+    const temp = fak[endIndex].id-1;
+    const temp2 = fak[startIndex].id-1;
+
+    const [removed] = result.splice(temp2, 1);
+    result.splice(temp, 0, removed)
+
+    // result[temp-1].id = fak[startIndex].id;
+    // result[temp2-1].id = temp;
+    // console.log(fak[startIndex], 'id should equal ' + temp)
+
+    // const temp2 = source.id;
+    // source.id = destination.id;
+    // destination.id = temp2;
+    // return result;
+
+    // const [removed2] = result.splice(startIndex, 1);
+    // result.splice(endIndex, 0, removed2);
+
+    console.log(result, 'wtf did the change occur?')
     return result;
+
 };
 
 /**
@@ -30,15 +48,15 @@ const reorder = (list, startIndex, endIndex) => {
 const move = (source, destination, droppableSource, droppableDestination, actualID) => {
     // console.log(droppableSource, 'dis da droppable Source');
     // console.log(droppableDestination, 'dis da droppable Destination');
-    console.log(source, 'dis da original array');
-    console.log(destination, 'dis da destination array');
+    // console.log(source, 'dis da original array');
+    // console.log(destination, 'dis da destination array');
     const sourceClone = Array.from(source);
     const destClone = Array.from(destination);
     const [removed] = sourceClone.splice(droppableSource.index, 1);
     // console.log(droppableSource, 'this is droppable source index and confusing me')
     // console.log(removed, 'this is what is supposedly being removed')
     let changeType = source.find( item => item.id === actualID);
-    console.log(changeType, 'dis supposed to be the actual array source crap');
+    // console.log(changeType, 'dis supposed to be the actual array source crap');
     changeType.type = droppableDestination.droppableId;
     // console.log(changeType.type, 'this is the changed type tho')
 
@@ -98,29 +116,31 @@ class App extends Component {
   getList = id => this.state[this.id2List[id]];
 
   onDragEnd = result => {
-    console.log(result.draggableId, 'dis is on drag end')
       const { source, destination } = result;
       const actualId = result.draggableId;
 
-      // console.log(source, 'this is the source?')
-      // console.log(destination, 'this is the destination?')
+      console.log(destination, 'dis destination')
+
       // dropped outside the list
       if (!destination) {
           return;
       }
 
       if (source.droppableId === destination.droppableId) {
-          const items2 = reorder(
+          const items = reorder(
               this.getList(source.droppableId),
               source.index,
-              destination.index
+              destination.index,
+              destination,
+              source
           );
 
-          let state = { items2 };
+          let state = { items };
+          console.log(state, ' DIS IS DA STATE !!!!!!!!!!')
 
-          if (source.droppableId === 'droppable2') {
-              state = { selected: items2 };
-          }
+          // if (source.droppableId === 'droppable2') {
+          //     state = { selected: items };
+          // }
 
           this.setState(state);
       } else {
@@ -224,20 +244,6 @@ class App extends Component {
   }
 }
 
-function TodoList(props) {
-  return props.items.filter(item => item.type === 'Todo').map( item => <li className="task" onClick={ () => GetDescription(item.id)}>{item.task}<span onClick={ () => props.deleteItemById(item.id)} className="x">x</span><div id={item.id} className="desc">{item.description}</div></li> )
-}
-
-function DoingList(props) {
-  return props.items.filter(item => item.type === 'Doing').map( item => <li className="task" onClick={ () => GetDescription(item.id)}>{item.task}<span onClick={ () => props.deleteItemById(item.id)} className="x">x</span><div id={item.id} className="desc">{item.description}</div></li> )
-}
-
-function DoneList(props) {
-  // The original code
-  // return props.items.filter(item => item.type === 'Done').map( item => <li onClick={ () => props.deleteItemdoById(item.id)}>{item.task}<span class="x">x</span><div class="desc">{item.description}</div></li> )
-  return props.items.filter(item => item.type === 'Done').map( item => <li className="task" onClick={ () => GetDescription(item.id)}>{item.task}<span onClick={ () => props.deleteItemById(item.id)} className="x">x</span><div id={item.id} className="desc">{item.description}</div></li> )
-}
-
 function TestThis1(props) {
   return props.items.filter(item => item.type === 'Todo').map((item, index) => (
     <li className="task" onClick={ () => GetDescription(item.id)}>
@@ -287,6 +293,7 @@ function TestThis2(props) {
 function TestThis3(props) {
   return props.items.filter(item => item.type === 'Done').map((item, index) => (
     <li className="task" onClick={ () => GetDescription(item.id)}>
+    {/* {console.log('AHHHAHAHSHFHASHFHASH', props)} */}
     <Draggable
         key={item.id}
         draggableId={item.id}
