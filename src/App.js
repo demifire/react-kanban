@@ -16,14 +16,51 @@ const getItems = (count, offset = 0) =>
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex, destination, source) => {
 
-    const result = Array.from(list);
+    let result = Array.from(list);
 
+    console.log(destination, 'what"s destination again??')
     let fak = result.filter(item => item.type === destination.droppableId);
-    const temp = fak[endIndex].id-1;
-    const temp2 = fak[startIndex].id-1;
+    console.log(fak, ' FAK DIS }HOLY FUK')
+    let temp = fak[endIndex].id-1;
+    let temp2 = fak[startIndex].id-1;
+    let tempId = fak[endIndex].id;
+    let temp2Id = fak[startIndex].id;
 
-    const [removed] = result.splice(temp2, 1);
+    // Swap start id with end id
+    fak[startIndex].id = tempId; 
+
+    // Splice out the starting item from the array
+    let [removed] = result.splice(temp2, 1);
+
+    // Insert it @ temp
     result.splice(temp, 0, removed)
+
+    // Reindex array 
+
+    for (let i = 0; i<result.length; i++) {
+      result[i].id = i+1
+      console.log(result[i].task, 'new id is ' + result[i].id)
+    }
+
+    function checkDuplicateInObject(propertyName, inputArray) {
+      let seenDuplicate = false,
+          testObject = {};
+    
+      inputArray.map(function(item) {
+        let itemPropertyName = item[propertyName];    
+        if (itemPropertyName in testObject) {
+          seenDuplicate = true;
+        }
+        else {
+          testObject[itemPropertyName] = item;
+          delete item.duplicate;
+        }
+      });
+    
+      return seenDuplicate;
+    }
+
+    console.log(checkDuplicateInObject('id', result), 'dis da check duplicate stuff brh')
 
     return result;
 
@@ -32,21 +69,15 @@ const reorder = (list, startIndex, endIndex, destination, source) => {
 /**
  * Moves an item from one list to another list.
  */
-const move = (source, destination, droppableSource, droppableDestination, actualID) => {
+const move = (startIndex, endIndex, source, destination, actualID, list) => {
 
-    const sourceClone = Array.from(source);
-    const destClone = Array.from(destination);
-    const [removed] = sourceClone.splice(droppableSource.index, 1);
-    let changeType = source.find( item => item.id === actualID);
-    changeType.type = droppableDestination.droppableId;
+  let result = Array.from(list);
 
-    destClone.splice(droppableDestination.index, 0, removed);
+    let changeType = result.find( result => result.id === actualID);
+    changeType.type = destination.droppableId;
 
-    const result = {};
-    result[droppableSource.droppableId] = sourceClone;
-    result[droppableDestination.droppableId] = destClone;
 
-    return result;
+    return result; 
 };
 
 const grid = 8;
@@ -92,12 +123,19 @@ class App extends Component {
       Doing: 'items',
       Done: 'items',
   };
+  
 
   getList = id => this.state[this.id2List[id]];
 
+  getActualList = () => this.id2List;
+
   onDragEnd = result => {
+    console.log(result, 'result ? ')
+
       const { source, destination } = result;
       const actualId = result.draggableId;
+
+      const list = this.getList(source.droppableId);
 
       // dropped outside the list
       if (!destination) {
@@ -114,26 +152,35 @@ class App extends Component {
           );
 
           let state = { items };
-          console.log(state, ' DIS IS DA STATE !!!!!!!!!!')
 
           // if (source.droppableId === 'droppable2') {
           //     state = { selected: items };
           // }
 
-          this.setState(state);
+          this.setState(state, console.log(state, ' DIS IS DA STATE !!!!!!!!!!'));
       } else {
           const result = move(
-              this.getList(source.droppableId),
-              this.getList(destination.droppableId),
+              source.index,
+              destination.index,
               source,
               destination,
-              actualId
+              actualId,
+              list
           );
 
-          this.setState({
-              items2: result.droppable,
-              selected: result.droppable2
-          });
+        let state = { result };
+        console.log(state, ' DIS IS DA STATE !!!!!!!!!!')
+
+        // if (source.droppableId === 'droppable2') {
+        //     state = { selected: items };
+        // }
+
+        this.setState(state);
+
+          // this.setState({
+          //     items2: result.droppable,
+          //     selected: result.droppable2
+          // });
       }
   };
 
@@ -152,16 +199,53 @@ class App extends Component {
 
   addItem = (item) => {
     addItemToFakeXHR(item)
-    .then( items => {
-      this.setState( {items } )
-    })
+
+    let original = item.id
+    let newId = this.state.items.length+1;
+    item.id = newId;
+    // console.log(item.id, 'HELLO????')
+    
+    // Check for duplicates
+    if (this.state.items.some( arrayItem => arrayItem.id === item.id)) {
+      // console.log(this.state.items, 'waait does it really exist in here tho?')
+      // console.log('Item id exists. Edit submission.')
+      item.id = original;
+      return false
+    } else {
+
+      this.state.items.push(item)
+          // Reindex array  --- Uhhh do I have to re index here?
+
+    for (let i = 0; i<this.state.items.length; i++) {
+      this.state.items[i].id = i+1;
+      console.log(this.state.items[i].task, 'new id is ' + this.state.items[i].id)
+    }
+      this.setState( this.state.items  )
+      // .then( items => {
+      //   console.log(items, ' THIS IS ITEMS')
+      //   this.setState( this.state.items  )
+      // })
+    }
   }
 
   deleteItemById = (itemId) => {
     deleteItemByIdFromFakeXHR(itemId)
-    .then( result => {
-      this.updateStateFromDb()
-    })
+    const itemIdx = this.state.items.findIndex( item => item.id === itemId);
+    if (itemIdx === -1) {
+      console.log('Error: Item not found. Item could not be deleted.')
+    } else {
+      this.state.items = this.state.items.filter( item => {
+        return item.id !== itemId
+      })
+    }
+
+    // reindex?
+
+    for (let i = 0; i<this.state.items.length; i++) {
+      this.state.items[i].id = i+1;
+      console.log(this.state.items[i].task, 'new id is ' + this.state.items[i].id)
+    }
+    this.setState( this.state.items )
   }
 
 
@@ -184,6 +268,8 @@ class App extends Component {
                             style={getListStyle(snapshot.isDraggingOver)}>
                             <TestThis1 deleteItemById={this.deleteItemById} items={items}/> 
                             {provided.placeholder}
+                            {/* {console.log(provided, ' this is provided')}
+                            {console.log(snapshot, 'this is a snapshop')} */}
                         </div>
                     )}
                 </Droppable>

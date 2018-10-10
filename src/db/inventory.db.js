@@ -36,7 +36,7 @@ let itemsFromFakeDB = [{
   }
 ]
 
-let newId = 7
+// let newId = 7
 
 export const getItemsFromFakeXHR = () => new Promise((resolve, reject) => {
   setTimeout( () => {
@@ -55,12 +55,13 @@ const checkFakeXHRForDuplicates = (itemID) => {
 
 export const addItemToFakeXHR = (item) => new Promise((resolve, reject) => {
     setTimeout( () => {
-        item.id = newId;
+        // item.id = newId;
         if (checkFakeXHRForDuplicates(item.id)){
-            newId++;
+            // newId++;
             reject({status: 500, message: 'Duplicate id'})
         } else {
-            newId++;
+            // newId++;
+            console.log(itemsFromFakeDB, 'are changes reflected?')
             itemsFromFakeDB.push(item);
             resolve(itemsFromFakeDB)
         }
