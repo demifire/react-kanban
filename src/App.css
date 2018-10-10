@@ -17,7 +17,24 @@
 .App-content {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+
+.Todo {
+  border: 1px solid rgb(247, 183, 93);
+  background-color: rgb(253, 241, 222) !important;
+}
+
+.Doing {
+  border: 1px solid rgb(149, 211, 86);
+  background-color: rgb(229, 253, 204) !important;
+}
+
+.ass {
+ padding-left: 0px;
 }
 
 .App-title {

@@ -96,11 +96,11 @@ const getItemStyle = (isDragging, draggableStyle) => ({
 });
 
 const getListStyle = isDraggingOver => ({
-    background: isDraggingOver ? 'lightblue' : 'lightgrey',
+    background: isDraggingOver ? 'lightblue' : 'white',
     overflow: 'auto',
     padding: grid,
-    width: 250,
-    height: 300
+    width: 300,
+    height: 400
 });
 
 class App extends Component {
@@ -259,11 +259,11 @@ class App extends Component {
         </header>
         <div className="App-content">
         <DragDropContext onDragEnd={this.onDragEnd}>
-        <ul>
+        <ul className="ass">
         <h1 className="myh1">To do</h1>
                 <Droppable droppableId="Todo">
                     {(provided, snapshot) => (
-                        <div
+                        <div 
                             ref={provided.innerRef}
                             style={getListStyle(snapshot.isDraggingOver)}>
                             <TestThis1 deleteItemById={this.deleteItemById} items={items}/> 
@@ -317,6 +317,7 @@ function TestThis1(props) {
         index={index}>
         {(provided, snapshot) => (
             <div
+                className="Todo"
                 ref={provided.innerRef}
                 {...provided.draggableProps}
                 {...provided.dragHandleProps}
@@ -340,6 +341,7 @@ function TestThis2(props) {
         index={index}>
         {(provided, snapshot) => (
             <div
+                className="Doing"
                 ref={provided.innerRef}
                 {...provided.draggableProps}
                 {...provided.dragHandleProps}
