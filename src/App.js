@@ -351,7 +351,7 @@ function TestThis1(props) {
         index={index}>
         {(provided, snapshot) => (
             <div
-                className="Todo"
+                className="Todo card"
                 ref={provided.innerRef}
                 {...provided.draggableProps}
                 {...provided.dragHandleProps}
@@ -360,9 +360,11 @@ function TestThis1(props) {
                     provided.draggableProps.style
                 )}>
                 {item.task}
-                <span onClick={ () => props.deleteItemById(item.id)} className="x">x</span></div>
+                <span onClick={ () => props.deleteItemById(item.id)} className="x">x</span>
+                <div id={item.id} className="desc"><br /><span className='bold'>Priority: </span>{item.priority}<br/>{item.description}</div>
+                </div>
         )}
-    </Draggable><div id={item.id} className="desc">{item.description}</div></li>
+    </Draggable></li>
 ))
 }
 
@@ -375,7 +377,7 @@ function TestThis2(props) {
         index={index}>
         {(provided, snapshot) => (
             <div
-                className="Doing"
+                className="Doing card"
                 ref={provided.innerRef}
                 {...provided.draggableProps}
                 {...provided.dragHandleProps}
@@ -384,9 +386,11 @@ function TestThis2(props) {
                     provided.draggableProps.style
                 )}>
                 {item.task}
-                <span onClick={ () => props.deleteItemById(item.id)} className="x">x</span></div>
+                <span onClick={ () => props.deleteItemById(item.id)} className="x">x</span>
+                <div id={item.id} className="desc">{item.description}</div>
+                </div>
         )}
-    </Draggable><div id={item.id} className="desc">{item.description}</div></li>
+    </Draggable></li>
 ))
 }
 
@@ -400,7 +404,7 @@ function TestThis3(props) {
         index={index}>
         {(provided, snapshot) => (
             <div
-                className="Done"
+                className="Done card"
                 ref={provided.innerRef}
                 {...provided.draggableProps}
                 {...provided.dragHandleProps}
@@ -409,9 +413,11 @@ function TestThis3(props) {
                     provided.draggableProps.style
                 )}>
                 {item.task}
-                <span onClick={ () => props.deleteItemById(item.id)} className="x">x</span></div>
+                <span onClick={ () => props.deleteItemById(item.id)} className="x">x</span>
+                <div id={item.id} className="desc">{item.description}</div>
+                </div>
         )}
-    </Draggable><div id={item.id} className="desc">{item.description}</div></li>
+    </Draggable></li>
 ))
 }
 
@@ -428,6 +434,23 @@ function GetDescription(itemID){
       }
     }
   }
+  // highlightItem(itemID)
 }
+
+// function highlightItem(ID){
+//   let allCardItems = document.getElementsByClassName('card');
+//   let toggleThis;
+//   for (var i = 0; i < allCardItems.length; i++){
+//     if ( allCardItems[i].id == ID ) {
+//       console.log(allCardItems[i].task);
+//       toggleThis = allCardItems[i];
+//       if ( toggleThis.style.fontSize === '14px'){
+//         toggleThis.style.fontSize = '40px'
+//       } else {
+//         toggleThis.style.fontSize = '14px'
+//       }
+//     }
+//   }
+// }
 
 export default App;

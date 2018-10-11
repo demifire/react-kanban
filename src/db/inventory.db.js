@@ -1,37 +1,38 @@
 let itemsFromFakeDB = [{
     id: 1,
-    task: 'Taking a piss',
-    description: 0.1,
+    task: 'Make sheeshee',
+    priority: 'Low',
+    description: 'Assigned by Jon',
     type: 'Todo'
   },
   {
     id: 2,
-    task: 'Eating a sandwich',
-    description: 10,
+    task: 'Eat a sandwich',
+    description: 'Assigned by Jon',
     type: 'Doing'
   },
   {
     id: 3,
-    task: 'Making a poop',
-    description: 2,
+    task: 'Make a poop',
+    description: 'Assigned by Renee',
     type: 'Done'
   },
   {
     id: 4,
-    task: 'Popping champagne',
-    description: 0.1,
+    task: 'Pop champagne',
+    description: 'Assigned by Jon',
     type: 'Todo'
   },
   {
    id: 5,
-    task: 'Drinking juice',
-    description: 0.1,
+    task: 'Drink juice',
+    description: 'Assigned by Renee',
     type: 'Doing'
   },
   {                
     id: 6,
     task: 'Wear ladies clothing',
-    description: 0.1,
+    description: 'Assigned by Jon',
     type: 'Done'
   }
 ]

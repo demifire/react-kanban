@@ -54,21 +54,18 @@ h1 {
 .Todo {
   border: 1px solid rgb(247, 183, 93);
   font-family: 'Maven Pro', sans-serif;
-  font-size: 14px;
   color: rgb(76, 82, 90);
 }
 
 .Doing {
   border: 1px solid rgb(149, 211, 86);
   font-family: 'Maven Pro', sans-serif;
-  font-size: 14px;
   color: rgb(76, 82, 90);
 }
 
 .Done {
   border: 1px solid rgb(207, 212, 221);
   font-family: 'Maven Pro', sans-serif;
-  font-size: 14px;
   color: rgb(76, 82, 90);
 }
 
@@ -138,4 +135,12 @@ ul {
 
 .ActionItem {
   text-align: center;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.card {
+  font-size: 14px;
 }
