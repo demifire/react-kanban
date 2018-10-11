@@ -1,17 +1,45 @@
+@import url('https://fonts.googleapis.com/css?family=Maven+Pro');
+@import url('https://fonts.googleapis.com/css?family=Asap|Dosis|KoHo');
+
+html {
+  padding: 0px;
+  margin: 0px
+}
+
 .App {
-  text-align: center;
+  text-align: left;
 }
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+  /* height: 20px; */
 }
 
 .App-header {
-  background-color: #222;
-  height: 75px;
-  padding: 20px;
+  background-color: rgb(76, 82, 90);
+  /* height: 35px; */
+  padding: 0px;
   color: white;
+  letter-spacing: 2px;
+  font-family: 'Maven Pro', sans-serif;
+  height: 50px;
+} 
+
+h1 {
+  padding: 0px;
+  margin: 0px;
+}
+
+.App-header h1{
+  color: rgb(237, 235, 235) !important;
+  padding-top: 15px;
+  padding-left: 8%;
+  font-size: 18px;
+}
+
+.App-wrapper {
+  text-align: center;
+  width: 100%;
 }
 
 .App-content {
@@ -25,21 +53,38 @@
 
 .Todo {
   border: 1px solid rgb(247, 183, 93);
-  background-color: rgb(253, 241, 222) !important;
+  font-family: 'Maven Pro', sans-serif;
+  font-size: 14px;
+  color: rgb(76, 82, 90);
 }
 
 .Doing {
   border: 1px solid rgb(149, 211, 86);
-  background-color: rgb(229, 253, 204) !important;
+  font-family: 'Maven Pro', sans-serif;
+  font-size: 14px;
+  color: rgb(76, 82, 90);
+}
+
+.Done {
+  border: 1px solid rgb(207, 212, 221);
+  font-family: 'Maven Pro', sans-serif;
+  font-size: 14px;
+  color: rgb(76, 82, 90);
 }
 
 .ass {
  padding-left: 0px;
 }
 
-.App-title {
-  font-size: 2.5em;
+.border {
+  padding: 0px;
+  margin: 0px;
 }
+
+/* h1.App-title {
+  background-color: rgb(76, 82, 90);
+  padding: 0px;
+} */
 
 .App-intro {
   font-size: large;
@@ -49,6 +94,13 @@ li {
   list-style-type: none;
 }
 
+ul {
+  padding-right: 44px;
+  justify-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
 .List {
   display: flex;
   flex-direction: column;
@@ -56,7 +108,11 @@ li {
 }
 
 .myh1 {
-  font-size: 20px;
+  padding: 20px;
+  color: rgb(105, 108, 113);
+  font-size: 16px;
+  font-family: 'Maven Pro', sans-serif;
+  letter-spacing: 1px;
 }
 
 .desc {
@@ -78,4 +134,8 @@ li {
 
 .task:hover .x {
   display: inline-block;
+}
+
+.ActionItem {
+  text-align: center;
 }

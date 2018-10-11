@@ -39,7 +39,7 @@ const reorder = (list, startIndex, endIndex, destination, source) => {
 
     for (let i = 0; i<result.length; i++) {
       result[i].id = i+1
-      console.log(result[i].task, 'new id is ' + result[i].id)
+      // console.log(result[i].task, 'new id is ' + result[i].id)
     }
 
     function checkDuplicateInObject(propertyName, inputArray) {
@@ -60,7 +60,7 @@ const reorder = (list, startIndex, endIndex, destination, source) => {
       return seenDuplicate;
     }
 
-    console.log(checkDuplicateInObject('id', result), 'dis da check duplicate stuff brh')
+    // console.log(checkDuplicateInObject('id', result), 'dis da check duplicate stuff brh')
 
     return result;
 
@@ -82,21 +82,51 @@ const move = (startIndex, endIndex, source, destination, actualID, list) => {
 
 const grid = 8;
 
-const getItemStyle = (isDragging, draggableStyle) => ({
+const getItemStyle1 = (isDragging, draggableStyle) => ({
     // some basic styles to make the items look a bit nicer
     userSelect: 'none',
     padding: grid * 2,
     margin: `0 0 ${grid}px 0`,
 
     // change background colour if dragging
-    background: isDragging ? 'lightgreen' : 'grey',
+    
+    background: isDragging ? 'lightblue' : 'rgb(253, 241, 222)',
 
     // styles we need to apply on draggables
     ...draggableStyle
 });
 
+const getItemStyle2 = (isDragging, draggableStyle) => ({
+  // some basic styles to make the items look a bit nicer
+  userSelect: 'none',
+  padding: grid * 2,
+  margin: `0 0 ${grid}px 0`,
+
+  // change background colour if dragging
+  
+  background: isDragging ? 'lightblue' : 'rgb(229, 253, 204)',
+
+  // styles we need to apply on draggables
+  ...draggableStyle
+});
+
+const getItemStyle3 = (isDragging, draggableStyle) => ({
+  // some basic styles to make the items look a bit nicer
+  userSelect: 'none',
+  padding: grid * 2,
+  margin: `0 0 ${grid}px 0`,
+
+  // change background colour if dragging
+  
+  background: isDragging ? 'lightblue' : 'rgb(246, 247, 250)',
+
+  // styles we need to apply on draggables
+  ...draggableStyle
+});
+
 const getListStyle = isDraggingOver => ({
-    background: isDraggingOver ? 'lightblue' : 'white',
+    border: isDraggingOver ? '1px solid lightblue' : '1px solid white',
+    // background: isDraggingOver ? 'lightblue' : 'white',
     overflow: 'auto',
     padding: grid,
     width: 300,
@@ -130,7 +160,7 @@ class App extends Component {
   getActualList = () => this.id2List;
 
   onDragEnd = result => {
-    console.log(result, 'result ? ')
+    // console.log(result, 'result ? ')
 
       const { source, destination } = result;
       const actualId = result.draggableId;
@@ -169,7 +199,7 @@ class App extends Component {
           );
 
         let state = { result };
-        console.log(state, ' DIS IS DA STATE !!!!!!!!!!')
+        // console.log(state, ' DIS IS DA STATE !!!!!!!!!!')
 
         // if (source.droppableId === 'droppable2') {
         //     state = { selected: items };
@@ -218,7 +248,7 @@ class App extends Component {
 
     for (let i = 0; i<this.state.items.length; i++) {
       this.state.items[i].id = i+1;
-      console.log(this.state.items[i].task, 'new id is ' + this.state.items[i].id)
+      // console.log(this.state.items[i].task, 'new id is ' + this.state.items[i].id)
     }
       this.setState( this.state.items  )
       // .then( items => {
@@ -243,7 +273,7 @@ class App extends Component {
 
     for (let i = 0; i<this.state.items.length; i++) {
       this.state.items[i].id = i+1;
-      console.log(this.state.items[i].task, 'new id is ' + this.state.items[i].id)
+      // console.log(this.state.items[i].task, 'new id is ' + this.state.items[i].id)
     }
     this.setState( this.state.items )
   }
@@ -255,12 +285,13 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 className="App-title">Reack Attak</h1>
+          <h1 className="App-title">KANBAN</h1>
         </header>
+        <div className="App-wrapper">
         <div className="App-content">
         <DragDropContext onDragEnd={this.onDragEnd}>
         <ul className="ass">
-        <h1 className="myh1">To do</h1>
+        <h1 className="myh1">IN QUEUE</h1>
                 <Droppable droppableId="Todo">
                     {(provided, snapshot) => (
                         <div 
@@ -274,8 +305,9 @@ class App extends Component {
                     )}
                 </Droppable>
                 </ul>
+                <hr className="border" />
                 <ul>
-        <h1 className="myh1">Doing</h1>
+        <h1 className="myh1">IN PROGRESS</h1>
                 <Droppable droppableId="Doing">
                     {(provided, snapshot) => (
                         <div
@@ -287,8 +319,9 @@ class App extends Component {
                     )}
                 </Droppable>
                 </ul>
+                <hr className="border" />
                 <ul>
-        <h1 className="myh1">Done</h1>
+        <h1 className="myh1">COMPLETED</h1>
                 <Droppable droppableId="Done">
                     {(provided, snapshot) => (
                         <div
@@ -303,6 +336,7 @@ class App extends Component {
             </DragDropContext>
         </div>
         <ItemForm addItem={this.addItem}/>
+        </div>
       </div>
     );
   }
@@ -321,7 +355,7 @@ function TestThis1(props) {
                 ref={provided.innerRef}
                 {...provided.draggableProps}
                 {...provided.dragHandleProps}
-                style={getItemStyle(
+                style={getItemStyle1(
                     snapshot.isDragging,
                     provided.draggableProps.style
                 )}>
@@ -345,7 +379,7 @@ function TestThis2(props) {
                 ref={provided.innerRef}
                 {...provided.draggableProps}
                 {...provided.dragHandleProps}
-                style={getItemStyle(
+                style={getItemStyle2(
                     snapshot.isDragging,
                     provided.draggableProps.style
                 )}>
@@ -366,10 +400,11 @@ function TestThis3(props) {
         index={index}>
         {(provided, snapshot) => (
             <div
+                className="Done"
                 ref={provided.innerRef}
                 {...provided.draggableProps}
                 {...provided.dragHandleProps}
-                style={getItemStyle(
+                style={getItemStyle3(
                     snapshot.isDragging,
                     provided.draggableProps.style
                 )}>
