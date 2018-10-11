@@ -285,7 +285,8 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 className="App-title">KANBAN</h1>
+          <h1 className="title-left">KANBAN</h1>
+          <p onClick={ () => {console.log('this works')}} className="title-right">+ NEW TASK</p>
         </header>
         <div className="App-wrapper">
         <div className="App-content">
@@ -335,6 +336,7 @@ class App extends Component {
             </ul>
             </DragDropContext>
         </div>
+        <br></br>
         <ItemForm addItem={this.addItem}/>
         </div>
       </div>
