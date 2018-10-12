@@ -22,14 +22,14 @@
     "react-scripts": "2.0.4"
   },
   "scripts": {
-    "migrate": "POSTGRES_HOSTNAME=localhost POSTGRES_CONTAINER_PORT=2345 npx knex --knexfile ./server/knexfile.js migrate:latest",
-    "seed": "POSTGRES_HOSTNAME=localhost POSTGRES_CONTAINER_PORT=2345 npx knex --knexfile ./server/knexfile.js seed:run",
+    "migrate": "POSTGRES_HOSTNAME=localhost POSTGRES_CONTAINER_PORT=1245 npx knex --knexfile ./server/knexfile.js migrate:latest",
+    "seed": "POSTGRES_HOSTNAME=localhost POSTGRES_CONTAINER_PORT=1245 npx knex --knexfile ./server/knexfile.js seed:run",
     "start": "react-scripts start & npx nodemon ./server/server.js ",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:2000",
+  "proxy": "http://localhost:5000",
   "eslintConfig": {
     "extends": "react-app"
   },

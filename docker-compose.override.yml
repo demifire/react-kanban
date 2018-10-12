@@ -1,12 +1,12 @@
 version: '3'
 services:
-  react-inventory:
+  react-kaban:
     image: demifire/react-kaban:${IMAGE_VERSION}-local
     depends_on:
       - postgres-primary-db
       - redis-session-store
     command: ["npm", "run", "start"]
-    container_name: react-inventory
+    container_name: react-kaban
     volumes:
       - ".:/app/:rw"
     env_file: .env
@@ -14,7 +14,7 @@ services:
       NODE_ENV: development
     ports:
       - "${EXPRESS_HOST_PORT}:${EXPRESS_CONTAINER_PORT}"
-      - "2000:2000"
+      - "3000:3000"
     networks:
       - my-app-network
   postgres-primary-db:

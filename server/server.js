@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express()
-const PORT = process.env.EXPRESS_CONTAINER_PORT || 9999
+const PORT = process.env.EXPRESS_CONTAINER_PORT || 4000 
 const path = require('path')
 const Items = require('./db/models/Items.js');
 
