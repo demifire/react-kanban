@@ -239,34 +239,44 @@ class App extends Component {
   }
 
   addItem = (item) => {
-    addItemToFakeXHR(item)
+// addItemToFakeXHR(item)
 
-    let original = item.id
-    let newId = this.state.items.length+1;
-    item.id = newId;
-    // console.log(item.id, 'HELLO????')
-    
-    // Check for duplicates
-    if (this.state.items.some( arrayItem => arrayItem.id === item.id)) {
-      // console.log(this.state.items, 'waait does it really exist in here tho?')
-      // console.log('Item id exists. Edit submission.')
-      item.id = original;
-      return false
-    } else {
+let original = item.id
+let newId = this.state.items.length+1;
+item.id = newId;
+// console.log(item.id, 'HELLO????')
 
-      this.state.items.push(item)
-          // Reindex array  --- Uhhh do I have to re index here?
+// Check for duplicates
+if (this.state.items.some( arrayItem => arrayItem.id === item.id)) {
+  // console.log(this.state.items, 'waait does it really exist in here tho?')
+  // console.log('Item id exists. Edit submission.')
+  item.id = original;
+  return false
+} else {
 
-    for (let i = 0; i<this.state.items.length; i++) {
-      this.state.items[i].id = i+1;
-      // console.log(this.state.items[i].task, 'new id is ' + this.state.items[i].id)
-    }
-      this.setState( this.state.items  )
-      // .then( items => {
-      //   console.log(items, ' THIS IS ITEMS')
-      //   this.setState( this.state.items  )
-      // })
-    }
+  this.state.items.push(item)
+      // Reindex array  --- Uhhh do I have to re index here?
+
+for (let i = 0; i<this.state.items.length; i++) {
+  this.state.items[i].id = i+1;
+  // console.log(this.state.items[i].task, 'new id is ' + this.state.items[i].id)
+}
+  this.setState( this.state.items  )
+  // .then( items => {
+  //   console.log(items, ' THIS IS ITEMS')
+  //   this.setState( this.state.items  )
+  // })
+
+  axios
+  .post('/', item)
+  .then( items => {
+    // console.log("items", items)
+    // this.setState({items: items.data})
+  })
+  .catch( err => {
+    console.log('err', err)
+  })
+}
   }
 
   deleteItemById = (itemId) => {
