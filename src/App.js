@@ -3,6 +3,24 @@ import './App.css';
 import { getItemsFromFakeXHR, addItemToFakeXHR, deleteItemByIdFromFakeXHR } from './db/inventory.db';
 import ItemForm from './ItemForm';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import axios from 'axios';
+import { Provider } from 'react-redux';
+// import { applyMiddleware } from '../../../../../Library/Caches/typescript/3.1/node_modules/redux';
+// import store from './store';
+import { connect } from 'react-redux';
+import { fetchItems } from './actions/itemActions';
+
+
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import rootReducer from './reducers';
+
+
+const initialState = {};
+
+const middleware = [thunk];
+
+const store = createStore(rootReducer, initialState, applyMiddleware(...middleware));
 
 // fake data generator
 const foo =
@@ -95,6 +113,8 @@ const getItemStyle1 = (isDragging, draggableStyle) => ({
     // styles we need to apply on draggables
     ...draggableStyle
 });
+
+// store = {store};
 
 const getItemStyle2 = (isDragging, draggableStyle) => ({
   // some basic styles to make the items look a bit nicer
@@ -219,16 +239,29 @@ class App extends Component {
   }
 
   updateStateFromDb = () => {
-    getItemsFromFakeXHR()
-      .then( items => {
-        this.setState({items}, () => {
-          console.log('this.state', this.state)
-        })
-      })
+    // getItemsFromFakeXHR()
+    //   .then( items => {
+    //     this.setState({items}, () => {
+    //       console.log('this.state', this.state)
+    //     })
+    //   })
+    
+    // // Second iteration
+    // axios
+    // .get('/items')
+    // .then( items => {
+    //   console.log("items", items)
+    //   this.setState({items: items.data})
+    // })
+    // .catch( err => {
+    //   console.log('err', err)
+    // })
+
+    this.props.fetchItems();
   }
 
   addItem = (item) => {
-    addItemToFakeXHR(item)
+    // addItemToFakeXHR(item)
 
     let original = item.id
     let newId = this.state.items.length+1;
@@ -255,6 +288,16 @@ class App extends Component {
       //   console.log(items, ' THIS IS ITEMS')
       //   this.setState( this.state.items  )
       // })
+
+      axios
+      .post('/', item)
+      .then( items => {
+        // console.log("items", items)
+        // this.setState({items: items.data})
+      })
+      .catch( err => {
+        console.log('err', err)
+      })
     }
   }
 
@@ -283,6 +326,7 @@ class App extends Component {
     const { items } = this.state
 
     return (
+      <Provider store={store}>
       <div className="App">
         <header className="App-header">
           <h1 className="title-left">KANBAN</h1>
@@ -340,6 +384,7 @@ class App extends Component {
         <ItemForm addItem={this.addItem}/>
         </div>
       </div>
+      </Provider>
     );
   }
 }
@@ -397,6 +442,7 @@ function TestThis2(props) {
 }
 
 function TestThis3(props) {
+  console.log(props, 'DIS BE PROPS')
   return props.items.filter(item => item.type === 'Done').map((item, index) => (
     <li className="task" onClick={ () => GetDescription(item.id)}>
     {/* {console.log('AHHHAHAHSHFHASHFHASH', props)} */}
@@ -455,4 +501,8 @@ function GetDescription(itemID){
 //   }
 // }
 
-export default App;
+const mapStateToProps = state => ({
+  items: state.items.myItems
+})
+
+export default connect(mapStateToProps, { fetchItems })(App);

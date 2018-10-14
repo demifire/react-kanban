@@ -32,7 +32,7 @@ class ItemForm extends Component {
 
   render() {
     return (
-      <div className="ActionItem">
+      <div className="ActionItem" action="/" method="post">
       <form onSubmit={this.handleSubmit}>
         <label> Task:
           <input onChange={this.handleChange} name="task" type="text"/>
@@ -40,11 +40,14 @@ class ItemForm extends Component {
         <label> Description:
           <input onChange={this.handleChange} name="description" type="text"/>
         </label>
+        <label> Priority:
+          <input onChange={this.handleChange} name="priority" type="text"/>
+        </label>
         <label> Type:
           <select onChange={this.handleChange} name="type">
-            <option value="Todo">To-do</option>
-            <option value="Doing">Doing</option>
-            <option value="Done">Done</option>
+            <option name="todo" value="Todo">To-do</option>
+            <option name="doing" value="Doing">Doing</option>
+            <option name="done" value="Done">Done</option>
           </select>
         </label>
         <input type="submit" value="Submit"/>
