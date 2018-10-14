@@ -5,6 +5,7 @@ import ItemForm from './ItemForm';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import { getAllItems } from './actions/actions.js'
 
 // fake data generator
 const foo =
@@ -138,11 +139,11 @@ const getListStyle = isDraggingOver => ({
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      items: [],
-      items2: getItems(10),
-      selected: getItems(5, 10)
-    }
+    // this.state = {
+    //   items: [],
+    //   items2: getItems(10),
+    //   selected: getItems(5, 10)
+    // }
   }
 
   /**
@@ -238,12 +239,13 @@ class App extends Component {
     //   console.log('err', err)
     // })
 
+    this.props.dispatch(getAllItems());
     console.log(this.props, 'dispatch');
-    this.props.dispatch({type: 'GET_ALL_ITEMS'});
 
   }
 
   addItem = (item) => {
+    console.log('THIS GETS TRIGGERED ADD ITEM')
 // addItemToFakeXHR(item)
 
 let original = item.id
@@ -306,7 +308,7 @@ for (let i = 0; i<this.state.items.length; i++) {
 
 
   render() {
-    const { items } = this.state
+    // const { items } = this.props.items
 
     return (
       <div className="App">
@@ -324,7 +326,7 @@ for (let i = 0; i<this.state.items.length; i++) {
                         <div 
                             ref={provided.innerRef}
                             style={getListStyle(snapshot.isDraggingOver)}>
-                            <TestThis1 deleteItemById={this.deleteItemById} items={items}/> 
+                            <TestThis1 props={this.props} deleteItemById={this.deleteItemById} items={this.props.items}/> 
                             {provided.placeholder}
                             {/* {console.log(provided, ' this is provided')}
                             {console.log(snapshot, 'this is a snapshop')} */}
@@ -340,7 +342,7 @@ for (let i = 0; i<this.state.items.length; i++) {
                         <div
                             ref={provided.innerRef}
                             style={getListStyle(snapshot.isDraggingOver)}>
-                            <TestThis2 deleteItemById={this.deleteItemById} items={items}/>
+                            <TestThis2 props={this.props} deleteItemById={this.deleteItemById} items={this.props.items}/>
                             {provided.placeholder}
                         </div>
                     )}
@@ -354,7 +356,7 @@ for (let i = 0; i<this.state.items.length; i++) {
                         <div
                             ref={provided.innerRef}
                             style={getListStyle(snapshot.isDraggingOver)}>
-                            <TestThis3 deleteItemById={this.deleteItemById} items={items}/> 
+                            <TestThis3 props={this.props} deleteItemById={this.deleteItemById} items={this.props.items}/> 
                             {provided.placeholder}
                         </div>
                     )}
@@ -371,6 +373,7 @@ for (let i = 0; i<this.state.items.length; i++) {
 }
 
 function TestThis1(props) {
+  console.log(props, 'this is props again but from test 1')
   return props.items.filter(item => item.type === 'Todo').map((item, index) => (
     <li className="task" onClick={ () => GetDescription(item.id)}>
     <Draggable
@@ -481,4 +484,11 @@ function GetDescription(itemID){
 //   }
 // }
 
-export default connect()(App);
+const mapStateToProps = state => {
+  return {
+    items: state,
+    lol: 'omgIJustEnteredAPropInThisComponent'
+  }
+}
+
+export default connect(mapStateToProps)(App);

@@ -37,6 +37,8 @@ let itemsFromFakeDB = [{
   }
 ]
 
+
+
 // let newId = 7
 
 export const getItemsFromFakeXHR = () => new Promise((resolve, reject) => {
@@ -93,3 +95,4 @@ export const deleteItemByIdFromFakeXHR = (itemId) => new Promise ( (resolve, rej
     }
   })
 })
+

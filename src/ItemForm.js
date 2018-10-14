@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './ItemForm.css';
 // import { format } from 'path';
+import { connect } from 'react-redux';
+import { addItem } from './actions/actions.js';
 
 class ItemForm extends Component {
   constructor(props) {
@@ -13,8 +15,12 @@ class ItemForm extends Component {
   }
 
   handleSubmit = (e) => {
-    e.preventDefault();
-    this.props.addItem(this.state)
+    // e.preventDefault();
+    // this.props.addItem(this.state)
+
+    e.preventDefault()
+    console.log('SUBMITTED!!!!', this.state);
+    this.props.dispatch(addItem(this.state));
   }
 
   handleChange = (e) => {
@@ -57,4 +63,4 @@ class ItemForm extends Component {
   }
 }
 
-export default ItemForm
+export default connect()(ItemForm)

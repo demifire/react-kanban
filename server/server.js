@@ -62,7 +62,11 @@ app.post( '/', (req, res) => {
     .forge(newItem)
     .save()
     .then((data) => {
+      return Items.fetchAll()
       console.log(data, 'data FUCK')
+    })
+    .then ( newItems => {
+      res.json(newItems.serialize())
     })
     .catch(err => {
       console.log('error', err)
