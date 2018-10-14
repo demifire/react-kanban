@@ -4,6 +4,7 @@ import { getItemsFromFakeXHR, addItemToFakeXHR, deleteItemByIdFromFakeXHR } from
 import ItemForm from './ItemForm';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import axios from 'axios';
+import { connect } from 'react-redux';
 
 // fake data generator
 const foo =
@@ -227,15 +228,19 @@ class App extends Component {
     //     })
     //   })
 
-        axios
-    .get('/items')
-    .then( items => {
-      console.log("items", items)
-      this.setState({items: items.data})
-    })
-    .catch( err => {
-      console.log('err', err)
-    })
+    //     axios
+    // .get('/items')
+    // .then( items => {
+    //   console.log("items", items)
+    //   this.setState({items: items.data})
+    // })
+    // .catch( err => {
+    //   console.log('err', err)
+    // })
+
+    console.log(this.props, 'dispatch');
+    this.props.dispatch({type: 'GET_ALL_ITEMS'});
+
   }
 
   addItem = (item) => {
@@ -476,4 +481,4 @@ function GetDescription(itemID){
 //   }
 // }
 
-export default App;
+export default connect()(App);
