@@ -314,7 +314,7 @@ for (let i = 0; i<this.state.items.length; i++) {
       <div className="App">
         <header className="App-header">
           <h1 className="title-left">KANBAN</h1>
-          <p onClick={ () => {console.log('this works')}} className="title-right">+ NEW TASK</p>
+          <p class="title-right" onClick={ () => {console.log('this works')}}><span id="annoying">+</span><span id="enlarge">+</span> NEW TASK</p>
         </header>
         <div className="App-wrapper">
         <div className="App-content">

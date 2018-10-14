@@ -16,15 +16,32 @@ html {
   text-align: right;
   position: absolute;
   margin-left: 80%;
-  margin-top: -25px;
+  margin-top: -24px;
   padding: 6px;
   color: rgb(237, 235, 235) !important;
   border: 1px solid rgb(237, 235, 235) !important;
 }
 
+#annoying {
+  position: absolute;
+  margin-top: -4.5px;
+  margin-left: -1px;
+  color: white;
+  font-size: 20px;
+  display: none;
+}
+
 .title-right:hover {
   cursor: pointer;
   font-size: 13px;
+}
+
+.title-right:hover > #enlarge{ 
+  opacity: 0;
+}
+
+.title-right:hover > #annoying{ 
+  display: block;
 }
 
 .title-left {
