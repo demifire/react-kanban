@@ -3,6 +3,7 @@ import './App.css';
 import { getItemsFromFakeXHR, addItemToFakeXHR, deleteItemByIdFromFakeXHR } from './db/inventory.db';
 import ItemForm from './ItemForm';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import axios from 'axios';
 
 // fake data generator
 const foo =
@@ -219,12 +220,22 @@ class App extends Component {
   }
 
   updateStateFromDb = () => {
-    getItemsFromFakeXHR()
-      .then( items => {
-        this.setState({items}, () => {
-          console.log('this.state', this.state)
-        })
-      })
+    // getItemsFromFakeXHR()
+    //   .then( items => {
+    //     this.setState({items}, () => {
+    //       console.log('this.state', this.state)
+    //     })
+    //   })
+
+        axios
+    .get('/items')
+    .then( items => {
+      console.log("items", items)
+      this.setState({items: items.data})
+    })
+    .catch( err => {
+      console.log('err', err)
+    })
   }
 
   addItem = (item) => {

@@ -3,7 +3,13 @@ const app = express()
 const PORT = process.env.EXPRESS_CONTAINER_PORT || 4000 
 const path = require('path')
 const Items = require('./db/models/Items.js');
+const bodyParser = require('body-parser')
 
+// parse application/x-www-form-urlencoded
+// app.use(bodyParser.urlencoded({ extended: false }))
+ 
+// parse application/json
+app.use(bodyParser.json())
 
 app.use(express.static(path.join(__dirname, '../build')))
 
@@ -43,7 +49,27 @@ app.get('/items', (req, res) => {
     })
 })
 
+app.post( '/', (req, res) => {
+  const newItem = {
+    // id: req.body.id,
+    task: req.body.task,
+    description: req.body.description,
+    priority: req.body.priority,
+    type: req.body.type
+  }
+
+  Items
+    .forge(newItem)
+    .save()
+    .then((data) => {
+      console.log(data, 'data FUCK')
+    })
+    .catch(err => {
+      console.log('error', err)
+      res.json(err)
+    })
+})
+
 app.listen(PORT, () => {
   console.log(`Listening on ${PORT}...`)
 })
-
