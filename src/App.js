@@ -5,7 +5,7 @@ import ItemForm from './ItemForm';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { getAllItems } from './actions/actions.js'
+import { getAllItems, deleteItemByIdAction } from './actions/actions.js'
 
 // fake data generator
 const foo =
@@ -222,88 +222,33 @@ class App extends Component {
   }
 
   updateStateFromDb = () => {
-    // getItemsFromFakeXHR()
-    //   .then( items => {
-    //     this.setState({items}, () => {
-    //       console.log('this.state', this.state)
-    //     })
-    //   })
-
-    //     axios
-    // .get('/items')
-    // .then( items => {
-    //   console.log("items", items)
-    //   this.setState({items: items.data})
-    // })
-    // .catch( err => {
-    //   console.log('err', err)
-    // })
-
     this.props.dispatch(getAllItems());
     console.log(this.props, 'dispatch');
 
   }
 
-  addItem = (item) => {
-    console.log('THIS GETS TRIGGERED ADD ITEM')
-// addItemToFakeXHR(item)
+  deleteItemById = (item) => {
 
-let original = item.id
-let newId = this.state.items.length+1;
-item.id = newId;
-// console.log(item.id, 'HELLO????')
-
-// Check for duplicates
-if (this.state.items.some( arrayItem => arrayItem.id === item.id)) {
-  // console.log(this.state.items, 'waait does it really exist in here tho?')
-  // console.log('Item id exists. Edit submission.')
-  item.id = original;
-  return false
-} else {
-
-  this.state.items.push(item)
-      // Reindex array  --- Uhhh do I have to re index here?
-
-for (let i = 0; i<this.state.items.length; i++) {
-  this.state.items[i].id = i+1;
-  // console.log(this.state.items[i].task, 'new id is ' + this.state.items[i].id)
-}
-  this.setState( this.state.items  )
-  // .then( items => {
-  //   console.log(items, ' THIS IS ITEMS')
-  //   this.setState( this.state.items  )
-  // })
-
-  axios
-  .post('/', item)
-  .then( items => {
-    // console.log("items", items)
-    // this.setState({items: items.data})
-  })
-  .catch( err => {
-    console.log('err', err)
-  })
-}
-  }
-
-  deleteItemById = (itemId) => {
-    deleteItemByIdFromFakeXHR(itemId)
-    const itemIdx = this.state.items.findIndex( item => item.id === itemId);
-    if (itemIdx === -1) {
-      console.log('Error: Item not found. Item could not be deleted.')
-    } else {
-      this.state.items = this.state.items.filter( item => {
-        return item.id !== itemId
-      })
-    }
+    console.log('DIS FIRED FUCK A')
+    this.props.dispatch(deleteItemByIdAction(item))
+    console.log('DIS FIRED SILVER LINING')
+    // deleteItemByIdFromFakeXHR(itemId)
+    // const itemIdx = this.state.items.findIndex( item => item.id === itemId);
+    // if (itemIdx === -1) {
+    //   console.log('Error: Item not found. Item could not be deleted.')
+    // } else {
+    //   this.state.items = this.state.items.filter( item => {
+    //     return item.id !== itemId
+    //   })
+    // }
 
     // reindex?
 
-    for (let i = 0; i<this.state.items.length; i++) {
-      this.state.items[i].id = i+1;
-      // console.log(this.state.items[i].task, 'new id is ' + this.state.items[i].id)
-    }
-    this.setState( this.state.items )
+    // for (let i = 0; i<this.state.items.length; i++) {
+    //   this.state.items[i].id = i+1;
+    //   // console.log(this.state.items[i].task, 'new id is ' + this.state.items[i].id)
+    // }
+    // this.setState( this.state.items )
   }
 
 
@@ -314,7 +259,7 @@ for (let i = 0; i<this.state.items.length; i++) {
       <div className="App">
         <header className="App-header">
           <h1 className="title-left">KANBAN</h1>
-          <p class="title-right" onClick={ () => {console.log('this works')}}><span id="annoying">+</span><span id="enlarge">+</span> NEW TASK</p>
+          <p className="title-right" onClick={ () => {console.log('this works')}}><span id="annoying">+</span><span id="enlarge">+</span> NEW TASK</p>
         </header>
         <div className="App-wrapper">
         <div className="App-content">
@@ -391,7 +336,7 @@ function TestThis1(props) {
                     provided.draggableProps.style
                 )}>
                 {item.task}
-                <span onClick={ () => props.deleteItemById(item.id)} className="x">x</span>
+                <span onClick={ () => props.deleteItemById(item)} className="x">x</span>
                 <div id={item.id} className="desc"><br /><span className='bold'>Priority: </span>{item.priority}<br/>{item.description}</div>
                 </div>
         )}
@@ -417,7 +362,7 @@ function TestThis2(props) {
                     provided.draggableProps.style
                 )}>
                 {item.task}
-                <span onClick={ () => props.deleteItemById(item.id)} className="x">x</span>
+                <span onClick={ () => props.deleteItemById(item)} className="x">x</span>
                 <div id={item.id} className="desc">{item.description}</div>
                 </div>
         )}
@@ -444,7 +389,7 @@ function TestThis3(props) {
                     provided.draggableProps.style
                 )}>
                 {item.task}
-                <span onClick={ () => props.deleteItemById(item.id)} className="x">x</span>
+                <span onClick={ () => props.deleteItemById(item)} className="x">x</span>
                 <div id={item.id} className="desc">{item.description}</div>
                 </div>
         )}

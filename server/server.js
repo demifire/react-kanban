@@ -74,6 +74,25 @@ app.post( '/', (req, res) => {
     })
 })
 
+app.delete( '/:id', (req, res) => {
+console.log(req.body, 'is this even bbody??')
+const id = req.body.item.id;
+console.log(id, 'this is id now')
+
+  Items
+    .where({ id })
+    .destroy()
+    .then(() => {
+      return Items.fetchAll()
+    })
+    .then ( newItems => {
+      res.json(newItems.serialize())
+    })
+    .catch(err => {
+      res.json(err);
+    })
+})
+
 app.listen(PORT, () => {
   console.log(`Listening on ${PORT}...`)
 })
