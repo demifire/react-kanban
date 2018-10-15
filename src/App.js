@@ -234,7 +234,7 @@ class App extends Component {
   }
 
   updateStateFromDb = () => {
-    this.props.dispatch(getAllItems());
+    this.props.dispatch(getAllItems())
     console.log(this.props, 'dispatch');
 
   }
@@ -331,8 +331,8 @@ class App extends Component {
 
 function TestThis1(props) {
   console.log(props, 'this is props again but from test 1')
-  return props.items.filter(item => item.type === 'Todo').map((item, index) => (
-    <div><li className="task" onClick={ () => GetDescription(item.id)}>
+  return props.items.items.filter(item => item.type === 'Todo').map((item, index) => (
+    <div><li className="task" onClick={ () => GetDescription(item.sortingid)}>
     <Draggable
         key={item.id}
         draggableId={item.id}
@@ -350,7 +350,7 @@ function TestThis1(props) {
                 {item.task}
                 <span onClick={ () => ToggleEdit(item.id) } className="edit"><FontAwesomeIcon className="edit2" icon="edit" /></span>
                 <span onClick={ () => props.deleteItemById(item)} className="x">x</span>
-                <div id={item.id} className="desc"><br /><span className='bold'>Priority: </span>{item.priority}<br/>{item.description}</div>
+                <div id={item.sortingid} className="desc"><br /><span className='bold'>Priority: </span>{item.priority}<br/>{item.description}</div>
                 </div>
         )}
     </Draggable></li><ItemEdit item={item}/></div>
@@ -358,8 +358,8 @@ function TestThis1(props) {
 }
 
 function TestThis2(props) {
-  return props.items.filter(item => item.type === 'Doing').map((item, index) => (
-    <div><li className="task" onClick={ () => GetDescription(item.id)}>
+  return props.items.items.filter(item => item.type === 'Doing').map((item, index) => (
+    <div><li className="task" onClick={ () => GetDescription(item.sortingid)}>
     <Draggable
         key={item.id}
         draggableId={item.id}
@@ -377,7 +377,7 @@ function TestThis2(props) {
                 {item.task}
                 <span onClick={ () => ToggleEdit(item.id) } className="edit"><FontAwesomeIcon className="edit2" icon="edit" /></span>
                 <span onClick={ () => props.deleteItemById(item)} className="x">x</span>
-                <div id={item.id} className="desc">{item.description}</div>
+                <div id={item.sortingid} className="desc">{item.description}</div>
                 </div>
         )}
     </Draggable></li><ItemEdit item={item}/></div>
@@ -385,8 +385,8 @@ function TestThis2(props) {
 }
 
 function TestThis3(props) {
-  return props.items.filter(item => item.type === 'Done').map((item, index) => (
-    <div><li className="task" onClick={ () => GetDescription(item.id)}>
+  return props.items.items.filter(item => item.type === 'Done').map((item, index) => (
+    <div><li className="task" onClick={ () => GetDescription(item.sortingid)}>
     {/* {console.log('AHHHAHAHSHFHASHFHASH', props)} */}
     <Draggable
         key={item.id}
@@ -405,7 +405,7 @@ function TestThis3(props) {
                 {item.task}
                 <span onClick={ () => ToggleEdit(item.id) } className="edit"><FontAwesomeIcon className="edit2" icon="edit" /></span>
                 <span onClick={ () => props.deleteItemById(item)} className="x">x</span>
-                <div id={item.id} className="desc">{item.description}</div>
+                <div id={item.sortingid} className="desc">{item.description}</div>
                 </div>
         )}
     </Draggable></li><ItemEdit item={item}/></div>

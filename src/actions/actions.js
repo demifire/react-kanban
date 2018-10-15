@@ -5,12 +5,20 @@ export const ADD_ITEM = 'ADD_ITEM';
 export const DELETE_ITEM_BY_ID = 'DELETE_ITEM_BY_ID';
 export const EDIT_ITEM_BY_ID = 'EDIT_ITEM_BY_ID';
 
+let cache;
+
 export const getAllItems = () => {
     return dispatch => {
         axios.get('/items')
             .then( response => {
                 // console.log(response, 'data in actionCreator');
-                dispatch({type: GET_ALL_ITEMS, payload: response.data})
+                cache = [...response.data];
+                for ( let i = 0; i < cache.length; i++ ) {
+                    cache[i].sortingid = i+1;
+                    // console.log(result[i].task, 'new id is ' + result[i].id)
+                }
+                console.log(cache, ' dis a cache');
+                dispatch({type: GET_ALL_ITEMS, payload: cache})
             })
             .catch( err => {
                 // dispatch({type: DISPLAY_ERROR_NOTIFICATION})
@@ -20,16 +28,41 @@ export const getAllItems = () => {
 }
 
 export const addItem = (item) => {
-    console.log('ACTION: addItem',  item)
+
+    // return dispatch => {
+    //     axios.post('/', item)
+    // .then( response => {
+    //     console.log('WHERE THE FUCK**********************************************************************************************', response.data)
+    //     dispatch({type: ADD_ITEM, payload: response.data})
+    // })
+    // .catch( err => {
+    //   console.log('err in addItem action axios call', err)
+    // });
+    // }
+
+
+    console.log('ACTION: addItem',  item);
+    cache = [...cache, item];
+    for ( let i = 0; i < cache.length; i++ ) {
+        cache[i].sortingid = i+1;
+        // console.log(result[i].task, 'new id is ' + result[i].id)
+    }
+    axios.post('/', item)
+    .then( response => {
+      console.log('response', response.data)
+    })
+    .catch( err => {
+      console.log('err in addItem action axios call', err)
+    //   if ( err ) {
+    //     const index = cache.findIndex(element => element.id === item.id);
+    //     cache.splice(index, 1);
+    //     return dispatch => {
+    //         dispatch({type: ADD_ITEM, payload: cache})
+    //     }
+    //   }
+    });
     return dispatch => {
-      axios.post('/', item)
-        .then( response => {
-          console.log('response', response.data)
-          dispatch({type: GET_ALL_ITEMS, payload: response.data})
-        })
-        .catch( err => {
-          console.log('err in addItem action axios call', err)
-        })
+        dispatch({type: ADD_ITEM, payload: cache})
     }
   }
 
