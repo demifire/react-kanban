@@ -1,4 +1,4 @@
-import { GET_ALL_ITEMS, ADD_ITEM, DELETE_ITEM_BY_ID } from '../actions/actions.js';
+import { GET_ALL_ITEMS, ADD_ITEM, DELETE_ITEM_BY_ID, EDIT_ITEM_BY_ID } from '../actions/actions.js';
 
 const itemReducer = (state = [], action) => {
     switch (action.type) {
@@ -7,6 +7,8 @@ const itemReducer = (state = [], action) => {
         case ADD_ITEM:
             return [...state, action.payload]
         case DELETE_ITEM_BY_ID:
+            return [...action.payload]
+        case EDIT_ITEM_BY_ID:
             return [...action.payload]
         default:
             return state

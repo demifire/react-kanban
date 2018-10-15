@@ -155,12 +155,30 @@ ul {
 }
 
 .x {
+  position: relative;
   font-family: 'Arial Narrow Bold', sans-serif;
   font-size: 20px;
-  margin-left: 20px;
+  margin-top: -3px;
+  margin-left: 90px;
   cursor: pointer;
   color: red;
   display: none;
+}
+
+.edit {
+  position: relative;
+  /* margin-left: 60px; */
+  display: none;
+}
+
+.edit2 {
+  position: absolute;
+  bottom: -1px;
+  left: 70px;
+}
+
+.edit:hover {
+  cursor: pointer;
 }
 
 .task:hover {
@@ -168,6 +186,10 @@ ul {
 }
 
 .task:hover .x {
+  display: inline-block;
+}
+
+.task:hover .edit {
   display: inline-block;
 }
 
@@ -181,4 +203,12 @@ ul {
 
 .card {
   font-size: 14px;
+}
+
+.EditItem {
+  display: none;
+}
+
+.EditForm input[type=text], textarea {
+  width: 100%;
 }

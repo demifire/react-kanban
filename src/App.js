@@ -1,11 +1,23 @@
 import React, { Component } from 'react';
 import './App.css';
 import { getItemsFromFakeXHR, addItemToFakeXHR, deleteItemByIdFromFakeXHR } from './db/inventory.db';
-import ItemForm from './ItemForm';
+import ItemForm from './ItemForm.js';
+import ItemEdit from './EditItem.js';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { getAllItems, deleteItemByIdAction } from './actions/actions.js'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGhost } from '@fortawesome/free-solid-svg-icons'
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons'
+import { faCoffee } from '@fortawesome/free-solid-svg-icons'
+import { faEdit } from '@fortawesome/free-solid-svg-icons'
+
+library.add(faEdit)
+library.add(faCoffee)
+library.add(faGhost)
+library.add(faPencilAlt)
 
 // fake data generator
 const foo =
@@ -320,7 +332,7 @@ class App extends Component {
 function TestThis1(props) {
   console.log(props, 'this is props again but from test 1')
   return props.items.filter(item => item.type === 'Todo').map((item, index) => (
-    <li className="task" onClick={ () => GetDescription(item.id)}>
+    <div><li className="task" onClick={ () => GetDescription(item.id)}>
     <Draggable
         key={item.id}
         draggableId={item.id}
@@ -336,17 +348,18 @@ function TestThis1(props) {
                     provided.draggableProps.style
                 )}>
                 {item.task}
+                <span onClick={ () => ToggleEdit(item.id) } className="edit"><FontAwesomeIcon className="edit2" icon="edit" /></span>
                 <span onClick={ () => props.deleteItemById(item)} className="x">x</span>
                 <div id={item.id} className="desc"><br /><span className='bold'>Priority: </span>{item.priority}<br/>{item.description}</div>
                 </div>
         )}
-    </Draggable></li>
+    </Draggable></li><ItemEdit item={item}/></div>
 ))
 }
 
 function TestThis2(props) {
   return props.items.filter(item => item.type === 'Doing').map((item, index) => (
-    <li className="task" onClick={ () => GetDescription(item.id)}>
+    <div><li className="task" onClick={ () => GetDescription(item.id)}>
     <Draggable
         key={item.id}
         draggableId={item.id}
@@ -362,17 +375,18 @@ function TestThis2(props) {
                     provided.draggableProps.style
                 )}>
                 {item.task}
+                <span onClick={ () => ToggleEdit(item.id) } className="edit"><FontAwesomeIcon className="edit2" icon="edit" /></span>
                 <span onClick={ () => props.deleteItemById(item)} className="x">x</span>
                 <div id={item.id} className="desc">{item.description}</div>
                 </div>
         )}
-    </Draggable></li>
+    </Draggable></li><ItemEdit item={item}/></div>
 ))
 }
 
 function TestThis3(props) {
   return props.items.filter(item => item.type === 'Done').map((item, index) => (
-    <li className="task" onClick={ () => GetDescription(item.id)}>
+    <div><li className="task" onClick={ () => GetDescription(item.id)}>
     {/* {console.log('AHHHAHAHSHFHASHFHASH', props)} */}
     <Draggable
         key={item.id}
@@ -389,18 +403,19 @@ function TestThis3(props) {
                     provided.draggableProps.style
                 )}>
                 {item.task}
+                <span onClick={ () => ToggleEdit(item.id) } className="edit"><FontAwesomeIcon className="edit2" icon="edit" /></span>
                 <span onClick={ () => props.deleteItemById(item)} className="x">x</span>
                 <div id={item.id} className="desc">{item.description}</div>
                 </div>
         )}
-    </Draggable></li>
+    </Draggable></li><ItemEdit item={item}/></div>
 ))
 }
 
-function GetDescription(itemID){
+function GetDescription(itemID) {
   let allDescItems = document.getElementsByClassName('desc');
   let toggleThis;
-  for (var i = 0; i < allDescItems.length; i++){
+  for (let i = 0; i < allDescItems.length; i++) {
     if ( allDescItems[i].id == itemID ) {
       toggleThis = allDescItems[i];
       if ( toggleThis.style.display === 'block'){
@@ -411,6 +426,22 @@ function GetDescription(itemID){
     }
   }
   // highlightItem(itemID)
+}
+
+function ToggleEdit(itemID) {
+  let allEditItems = document.getElementsByClassName('EditItem');
+  console.log(allEditItems[0], 'poopshoot')
+  let toggleThis;
+  for (let i = 0; i < allEditItems.length; i++) {
+    if ( allEditItems[i].id == itemID ) {
+      toggleThis = allEditItems[i];
+      if ( toggleThis.style.display === 'block') {
+        toggleThis.style.display = 'none'
+      } else {
+        toggleThis.style.display = 'block'
+      }
+    }
+  }
 }
 
 // function highlightItem(ID){

@@ -75,9 +75,7 @@ app.post( '/', (req, res) => {
 })
 
 app.delete( '/:id', (req, res) => {
-console.log(req.body, 'is this even bbody??')
 const id = req.body.item.id;
-console.log(id, 'this is id now')
 
   Items
     .where({ id })
@@ -91,6 +89,37 @@ console.log(id, 'this is id now')
     .catch(err => {
       res.json(err);
     })
+})
+
+app.put( '/:id', (req, res) => {
+
+  const id = parseInt(req.body.item.id);
+
+  const newItem = {
+    // id: req.body.item.id,
+    task: req.body.item.task,
+    description: req.body.item.description,
+    priority: req.body.item.priority,
+    type: req.body.item.type
+  }
+  console.log(req.body.item, 'this is getting annoying' )
+
+  Items
+  .where({id})
+  .fetch()
+  .then(update => {
+    return update.save(newItem)
+  })
+  .then((data) => {
+    return Items.fetchAll()
+  })
+  .then ( newItems => {
+    res.json(newItems.serialize())
+  })
+  .catch(err => {
+    console.log('error', err)
+    res.json(err)
+  })
 })
 
 app.listen(PORT, () => {
