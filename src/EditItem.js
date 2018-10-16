@@ -12,7 +12,8 @@ class ItemEdit extends Component {
       task: null,
       description: null,
       priority: null,
-      type: props.item.type
+      type: props.item.type,
+      sortingid: props.item.sortingid
     }
   }
 

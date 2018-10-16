@@ -6,7 +6,7 @@ import ItemEdit from './EditItem.js';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { getAllItems, deleteItemByIdAction } from './actions/actions.js'
+import { getAllItems, deleteItemByIdAction, reorderItem } from './actions/actions.js'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGhost } from '@fortawesome/free-solid-svg-icons'
@@ -28,72 +28,19 @@ const getItems = (count, offset = 0) =>
         content: `item ${k + offset}${k + offset >= 10 ? foo : ''}`
     }));
 
-// a little function to help us with reordering the result
-const reorder = (list, startIndex, endIndex, destination, source) => {
-
-    let result = Array.from(list);
-
-    console.log(destination, 'what"s destination again??')
-    let fak = result.filter(item => item.type === destination.droppableId);
-    console.log(fak, ' FAK DIS }HOLY FUK')
-    let temp = fak[endIndex].id-1;
-    let temp2 = fak[startIndex].id-1;
-    let tempId = fak[endIndex].id;
-    let temp2Id = fak[startIndex].id;
-
-    // Swap start id with end id
-    fak[startIndex].id = tempId; 
-
-    // Splice out the starting item from the array
-    let [removed] = result.splice(temp2, 1);
-
-    // Insert it @ temp
-    result.splice(temp, 0, removed)
-
-    // Reindex array 
-
-    for (let i = 0; i<result.length; i++) {
-      result[i].id = i+1
-      // console.log(result[i].task, 'new id is ' + result[i].id)
-    }
-
-    function checkDuplicateInObject(propertyName, inputArray) {
-      let seenDuplicate = false,
-          testObject = {};
-    
-      inputArray.map(function(item) {
-        let itemPropertyName = item[propertyName];    
-        if (itemPropertyName in testObject) {
-          seenDuplicate = true;
-        }
-        else {
-          testObject[itemPropertyName] = item;
-          delete item.duplicate;
-        }
-      });
-    
-      return seenDuplicate;
-    }
-
-    // console.log(checkDuplicateInObject('id', result), 'dis da check duplicate stuff brh')
-
-    return result;
-
-};
-
 /**
- * Moves an item from one list to another list.
- */
+* Moves an item from one list to another list.
+*/
 const move = (startIndex, endIndex, source, destination, actualID, list) => {
 
   let result = Array.from(list);
-
+  
     let changeType = result.find( result => result.id === actualID);
     changeType.type = destination.droppableId;
-
-
+  
+  
     return result; 
-};
+  };
 
 const grid = 8;
 
@@ -175,12 +122,13 @@ class App extends Component {
   getActualList = () => this.id2List;
 
   onDragEnd = result => {
-    // console.log(result, 'result ? ')
+    console.log(result, 'DIS DA RESULT ***************************')
 
       const { source, destination } = result;
       const actualId = result.draggableId;
 
-      const list = this.getList(source.droppableId);
+      const list = this.props.items.items;
+      console.log(list, 'hello list does this work?')
 
       // dropped outside the list
       if (!destination) {
@@ -188,24 +136,26 @@ class App extends Component {
       }
 
       if (source.droppableId === destination.droppableId) {
-          const items = reorder(
-              this.getList(source.droppableId),
+        this.reorder(
+              result,
+              list,
               source.index,
               destination.index,
               destination,
               source
           );
 
-          let state = { items };
+          // let state = { items };
 
-          // if (source.droppableId === 'droppable2') {
-          //     state = { selected: items };
-          // }
+          // // if (source.droppableId === 'droppable2') {
+          // //     state = { selected: items };
+          // // }
 
-          this.setState(state, console.log(state, ' DIS IS DA STATE !!!!!!!!!!'));
+          // this.setState(state, console.log(state, ' DIS IS DA STATE !!!!!!!!!!'));
       } else {
           const result = move(
               source.index,
+              result,
               destination.index,
               source,
               destination,
@@ -213,14 +163,14 @@ class App extends Component {
               list
           );
 
-        let state = { result };
+        // let state = { result };
         // console.log(state, ' DIS IS DA STATE !!!!!!!!!!')
 
         // if (source.droppableId === 'droppable2') {
         //     state = { selected: items };
         // }
 
-        this.setState(state);
+        // this.setState(state);
 
           // this.setState({
           //     items2: result.droppable,
@@ -228,6 +178,62 @@ class App extends Component {
           // });
       }
   };
+
+  // a little function to help us with reordering the result
+  reorder = ( result, list, startIndex, endIndex, destination, source ) => {
+
+  // console.log(props, 'what?!?!?!?!?');
+  this.props.dispatch(reorderItem( result, list, startIndex, endIndex, destination, source ));
+
+  // let result = Array.from(list);
+
+  // console.log(destination, 'what"s destination again??')
+  // let fak = result.filter(item => item.type === destination.droppableId);
+  // console.log(fak, ' FAK DIS }HOLY FUK')
+  // let temp = fak[endIndex].id-1;
+  // let temp2 = fak[startIndex].id-1;
+  // let tempId = fak[endIndex].id;
+  // let temp2Id = fak[startIndex].id;
+
+  // // Swap start id with end id
+  // fak[startIndex].id = tempId; 
+
+  // // Splice out the starting item from the array
+  // let [removed] = result.splice(temp2, 1);
+
+  // // Insert it @ temp
+  // result.splice(temp, 0, removed)
+
+  // // Reindex array 
+
+  // for (let i = 0; i<result.length; i++) {
+  //   result[i].id = i+1
+  //   // console.log(result[i].task, 'new id is ' + result[i].id)
+  // }
+
+  // function checkDuplicateInObject(propertyName, inputArray) {
+  //   let seenDuplicate = false,
+  //       testObject = {};
+  
+  //   inputArray.map(function(item) {
+  //     let itemPropertyName = item[propertyName];    
+  //     if (itemPropertyName in testObject) {
+  //       seenDuplicate = true;
+  //     }
+  //     else {
+  //       testObject[itemPropertyName] = item;
+  //       delete item.duplicate;
+  //     }
+  //   });
+  
+  //   return seenDuplicate;
+  // }
+
+  // // console.log(checkDuplicateInObject('id', result), 'dis da check duplicate stuff brh')
+
+  // return result;
+
+};
 
   componentDidMount() {
     this.updateStateFromDb();
