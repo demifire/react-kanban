@@ -55,7 +55,8 @@ app.post( '/', (req, res) => {
     task: req.body.task,
     description: req.body.description,
     priority: req.body.priority,
-    type: req.body.type
+    type: req.body.type,
+    sortingid: req.body.sortingid
   }
 
   Items

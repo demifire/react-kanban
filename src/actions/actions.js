@@ -28,6 +28,7 @@ export const addItem = (item) => {
 
     console.log('ACTION: addItem',  item);
     cache = [...cache, item];
+    item.sortingid = cache.length;
     for ( let i = 0; i < cache.length; i++ ) {
         cache[i].sortingid = i+1;
     }
