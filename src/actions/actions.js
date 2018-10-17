@@ -105,15 +105,13 @@ export const addItem = (item) => {
     }
   }
 
-  export const reorderItem = ( result, list, startIndex, endIndex, destination, source ) => {
+  export const reorderItem = ( result, list, startIndex, endIndex, destination, source, currentCache ) => {
 
-    console.log(result, 'bitch');
+    console.log(currentCache, 'this is the current cache bitch')
+    // console.log(result, 'bitch');
 
-    // let result = Array.from(list);
-
-    // console.log(destination, 'what"s destination again??')
     let fak = cache.filter(item => item.type === destination.droppableId);
-    console.log(fak, ' FAK DIS }HOLY FUK')
+    // console.log(fak, ' FAK DIS }HOLY FUK')
     let temp = fak[endIndex].sortingid-1;
     let temp2 = fak[startIndex].sortingid-1;
     let tempId = fak[endIndex].sortingid;
@@ -157,6 +155,14 @@ export const addItem = (item) => {
 
     // return result;
 
+    axios.put('/save', { currentCache })
+    .then( response => {
+      console.log('Edit response', response.data)
+    })
+    .catch( err => {
+      console.log('err in addItem action axios call', err)
+    })
+
     return dispatch => {
         dispatch({type: REORDER_ITEM, payload: cache})
     }
@@ -165,13 +171,27 @@ export const addItem = (item) => {
   export const changeItemType = (result) => {
   
     console.log(result, 'result');
-    console.log(cache, 'this is the current cache');
     let sourceArr = cache.filter(item => item.type === result.source.droppableId)
     let changeType = sourceArr[result.source.index]
     changeType.type = result.destination.droppableId;
 
     const item = changeType;
-  
+
+    // let DestinationArr = cache.filter(item => item.type === result.destination.droppableId);
+    // console.log(DestinationArr, 'Destination Arr');
+    // changeType.sortingid = DestinationArr[result.destination.index].sortingid;
+
+    // let [removed] = cache.splice(sourceArr[result.source.index], 1);
+    // cache.splice(DestinationArr[result.destination.index].sortingid-1, 0, removed);
+
+    // console.log(DestinationArr[result.destination.index], 'what is this', DestinationArr[result.destination.index].sortingid)
+
+    // for (let i = 0; i < cache.length; i++) {
+    //   cache[i].sortingid = i+1
+    // }
+
+    // console.log(cache, 'this is the current cache');
+
     axios.put('/:id', { item })
     .then( response => {
       console.log('Edit response', response.data)
@@ -184,3 +204,19 @@ export const addItem = (item) => {
         dispatch({type: CHANGE_ITEM_TYPE, payload: cache})
     } 
   }
+
+//   export const save = (cache) => {
+
+//     console.log('this is the one being fired')
+//     axios.put('/save', { cache })
+//     .then( response => {
+//       console.log('Edit response', response.data)
+//     })
+//     .catch( err => {
+//       console.log('err in addItem action axios call', err)
+//     })
+
+//     return dispatch => {
+//         dispatch({type: SAVE, payload: cache})
+//     }  
+//   }

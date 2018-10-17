@@ -75,6 +75,40 @@ app.post( '/', (req, res) => {
     })
 })
 
+app.put('/save', (req, res) => {
+
+  console.log(req.body, 'HELLO???')
+  let cache = req.body.currentCache;
+  let updateSort = {};
+  let id;
+  
+  console.log(cache, 'soup sop')
+  for ( let i = 0; i < cache.length; i++ ) {
+    id = cache[i].id;
+    updateSort.sortingid = i+1;
+
+    console.log(id, updateSort.sortingid, 'what is happening here?')
+
+    Items
+      .where({id})
+      .fetch()
+      .then(update => {
+        update.save(updateSort)
+      })
+      // .then((data) => {
+      //   return Items.fetchAll()
+      // })
+      // .then ( newItems => {
+      //   res.json(newItems.serialize())
+      // })
+      .catch(err => {
+        console.log('error', err)
+        res.json(err)
+      })
+  }
+  
+})
+
 app.delete( '/:id', (req, res) => {
 const id = req.body.item.id;
 
@@ -123,10 +157,6 @@ app.put( '/:id', (req, res) => {
     res.json(err)
   })
 })
-
-app.put('/index', (req, res) => {[
-  console.log(req.body, 'hello? holy motha fuck you"re a piece of crap that #@$@#$#@$@#$@#$@#$234')
-]})
 
 app.listen(PORT, () => {
   console.log(`Listening on ${PORT}...`)

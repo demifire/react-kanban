@@ -128,7 +128,8 @@ class App extends Component {
               source.index,
               destination.index,
               destination,
-              source
+              source,
+              this.props.items.items
           );
 
           // let state = { items };
@@ -160,10 +161,10 @@ class App extends Component {
   };
 
   // a little function to help us with reordering the result
-  reorder = ( result, list, startIndex, endIndex, destination, source ) => {
+  reorder = ( result, list, startIndex, endIndex, destination, source, currentCache ) => {
 
   // console.log(props, 'what?!?!?!?!?');
-  this.props.dispatch(reorderItem( result, list, startIndex, endIndex, destination, source ));
+  this.props.dispatch(reorderItem( result, list, startIndex, endIndex, destination, source, currentCache ));
 
   // let result = Array.from(list);
 

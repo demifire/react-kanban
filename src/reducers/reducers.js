@@ -1,4 +1,4 @@
-import { GET_ALL_ITEMS, ADD_ITEM, DELETE_ITEM_BY_ID, EDIT_ITEM_BY_ID, REORDER_ITEM, CHANGE_ITEM_TYPE } from '../actions/actions.js';
+import { GET_ALL_ITEMS, ADD_ITEM, DELETE_ITEM_BY_ID, EDIT_ITEM_BY_ID, REORDER_ITEM, CHANGE_ITEM_TYPE, SAVE } from '../actions/actions.js';
 
 const itemReducer = (state = {poop: 'f', items: []}, action) => {
     switch (action.type) {
@@ -14,6 +14,7 @@ const itemReducer = (state = {poop: 'f', items: []}, action) => {
             return { ...state, items: action.payload }
         case CHANGE_ITEM_TYPE:
             return { ...state, items: action.payload }
+
         default:
             return state
     }

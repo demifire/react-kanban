@@ -43,13 +43,13 @@ class ItemForm extends Component {
       <div className="ActionItem" action="/" method="post">
       <form onSubmit={this.handleSubmit}>
         <label> Task:
-          <input onChange={this.handleChange} name="task" type="text"/>
+          <input onChange={this.handleChange} name="task" type="text" required/>
         </label> 
         <label> Description:
-          <input onChange={this.handleChange} name="description" type="text"/>
+          <input onChange={this.handleChange} name="description" type="text" required/>
         </label>
         <label> Priority:
-          <input onChange={this.handleChange} name="priority" type="text"/>
+          <input onChange={this.handleChange} name="priority" type="text" required/>
         </label>
         <label> Type:
           <select onChange={this.handleChange} name="type">
