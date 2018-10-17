@@ -112,11 +112,14 @@ app.put('/save', (req, res) => {
 app.delete( '/:id', (req, res) => {
 const id = req.body.item.id;
 
+let newItem = {};
+newItem.type = false;
+
   Items
     .where({ id })
-    .destroy()
-    .then(() => {
-      return Items.fetchAll()
+    .fetch()
+    .then(update => {
+    return update.save(newItem)
     })
     .then ( newItems => {
       res.json(newItems.serialize())

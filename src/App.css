@@ -90,18 +90,21 @@ h1 {
 }
 
 .Todo {
+  position: relative;
   border: 1px solid rgb(247, 183, 93);
   font-family: 'Maven Pro', sans-serif;
   color: rgb(76, 82, 90);
 }
 
 .Doing {
+  position: relative;
   border: 1px solid rgb(149, 211, 86);
   font-family: 'Maven Pro', sans-serif;
   color: rgb(76, 82, 90);
 }
 
 .Done {
+  position: relative;
   border: 1px solid rgb(207, 212, 221);
   font-family: 'Maven Pro', sans-serif;
   color: rgb(76, 82, 90);
@@ -155,19 +158,20 @@ ul {
 }
 
 .x {
-  position: relative;
+  position: absolute;
+  top: 2px;
+  right: 10px;
   font-family: 'Arial Narrow Bold', sans-serif;
   font-size: 20px;
-  margin-top: -3px;
-  margin-left: 90px;
   cursor: pointer;
   color: red;
   display: none;
 }
 
 .edit {
-  position: relative;
-  /* margin-left: 60px; */
+  position: absolute;
+  top: 20px;
+  right: 115px;
   display: none;
 }
 
@@ -193,6 +197,11 @@ ul {
   display: inline-block;
 }
 
+.task:hover .expand {
+  display: inline-block;
+  opacity: 1;
+}
+
 .ActionItem {
   text-align: center;
 }
@@ -203,6 +212,7 @@ ul {
 
 .card {
   font-size: 14px;
+  display: block;
 }
 
 .EditItem {
@@ -210,5 +220,44 @@ ul {
 }
 
 .EditForm input[type=text], textarea {
-  width: 100%;
+  text-align: center;
+  border: none;
+  background-color: rgba(106, 106, 106, 0.091);
+  width: 80%;
+}
+
+.expand {
+  position: absolute;
+  font-size: 11px;
+  top: 35px;
+  left: 125px;
+  color: grey;
+  display: none;
+  opacity: 0;
+}
+
+.expand:hover {
+  color: rgb(113, 113, 113);
+  cursor: pointer
+}
+
+.showless {
+  position: absolute;
+  font-size: 11px;
+  top: 85px;
+  left: 115px;
+  color: grey;
+}
+
+.showless:hover {
+  color: rgb(113, 113, 113);
+  cursor: pointer
+}
+
+.noshow {
+  display: none;
+}
+
+.isHighlighted {
+  font-weight: none;
 }

@@ -335,7 +335,7 @@ class App extends Component {
 function TestThis1(props) {
   console.log(props, 'this is props again but from test 1')
   return props.items.items.filter(item => item.type === 'Todo').map((item, index) => (
-    <div><li className="task" onClick={ () => GetDescription(item.sortingid)}>
+    <li className="task">
     <Draggable
         key={item.id}
         draggableId={item.id}
@@ -350,19 +350,20 @@ function TestThis1(props) {
                     snapshot.isDragging,
                     provided.draggableProps.style
                 )}>
-                {item.task}
+                <span className="expand" onClick={ () => GetDescription(item.sortingid)}>[ Expand ]</span>
+                <span className="isHighlighted">{item.task}</span>
                 <span onClick={ () => ToggleEdit(item.id) } className="edit"><FontAwesomeIcon className="edit2" icon="edit" /></span>
                 <span onClick={ () => props.deleteItemById(item)} className="x">x</span>
-                <div id={item.sortingid} className="desc"><br /><span className='bold'>Priority: </span>{item.priority}<br/>{item.description}</div>
-                </div>
+                <div id={item.sortingid} className="desc"><br /><span className='bold'>Priority: </span>{item.priority}<br/>{item.description}<span className="showless" onClick={ () => GetDescription(item.sortingid)}>[ Show Less ]</span></div>
+                <ItemEdit currentCache={props.items.items} item={item}/></div>
         )}
-    </Draggable></li><ItemEdit item={item}/></div>
+    </Draggable></li>
 ))
 }
 
 function TestThis2(props) {
   return props.items.items.filter(item => item.type === 'Doing').map((item, index) => (
-    <div><li className="task" onClick={ () => GetDescription(item.sortingid)}>
+    <li className="task">
     <Draggable
         key={item.id}
         draggableId={item.id}
@@ -377,19 +378,21 @@ function TestThis2(props) {
                     snapshot.isDragging,
                     provided.draggableProps.style
                 )}>
-                {item.task}
+                <span className="expand" onClick={ () => GetDescription(item.sortingid)}>[ Expand ]</span>
+                <span className="isHighlighted">{item.task}</span>
                 <span onClick={ () => ToggleEdit(item.id) } className="edit"><FontAwesomeIcon className="edit2" icon="edit" /></span>
                 <span onClick={ () => props.deleteItemById(item)} className="x">x</span>
-                <div id={item.sortingid} className="desc">{item.description}</div>
+                <div id={item.sortingid} className="desc"><br /><span className='bold'>Priority: </span>{item.priority}<br/>{item.description}<span className="showless" onClick={ () => GetDescription(item.sortingid)}>[ Show Less ]</span></div>
+                <ItemEdit currentCache={props.items.items} item={item}/>
                 </div>
         )}
-    </Draggable></li><ItemEdit item={item}/></div>
+    </Draggable></li>
 ))
 }
 
 function TestThis3(props) {
   return props.items.items.filter(item => item.type === 'Done').map((item, index) => (
-    <div><li className="task" onClick={ () => GetDescription(item.sortingid)}>
+    <li className="task">
     {/* {console.log('AHHHAHAHSHFHASHFHASH', props)} */}
     <Draggable
         key={item.id}
@@ -404,64 +407,88 @@ function TestThis3(props) {
                 style={getItemStyle3(
                     snapshot.isDragging,
                     provided.draggableProps.style
-                )}>
-                {item.task}
+                )}><span className="expand" onClick={ () => GetDescription(item.sortingid)}>[ Expand ]</span>
+                <span className="isHighlighted">{item.task}</span>
                 <span onClick={ () => ToggleEdit(item.id) } className="edit"><FontAwesomeIcon className="edit2" icon="edit" /></span>
                 <span onClick={ () => props.deleteItemById(item)} className="x">x</span>
-                <div id={item.sortingid} className="desc">{item.description}</div>
+                <div id={item.sortingid} className="desc"><br /><span className='bold'>Priority: </span>{item.priority}<br/>{item.description}<span className="showless" onClick={ () => GetDescription(item.sortingid)}>[ Show Less ]</span></div>
+                <ItemEdit currentCache={props.items.items} item={item}/>
                 </div>
         )}
-    </Draggable></li><ItemEdit item={item}/></div>
+    </Draggable></li>
 ))
 }
 
 function GetDescription(itemID) {
   let allDescItems = document.getElementsByClassName('desc');
+  let allExpandItems = document.getElementsByClassName('expand');
+  let allHighlightedItems = document.getElementsByClassName('isHighlighted');
   let toggleThis;
   for (let i = 0; i < allDescItems.length; i++) {
     if ( allDescItems[i].id == itemID ) {
       toggleThis = allDescItems[i];
       if ( toggleThis.style.display === 'block'){
-        toggleThis.style.display = 'none'
+        toggleThis.style.display = 'none';
+        allExpandItems[i].style.display = 'block';
+        allHighlightedItems[i].style.fontWeight = 'normal';
+        allHighlightedItems[i].style.fontSize = '14px';
+        allHighlightedItems[i].style.textTransform = 'none';
       } else {
-        toggleThis.style.display = 'block'
+        toggleThis.style.display = 'block';
+        allExpandItems[i].style.display = 'none';
+        allHighlightedItems[i].style.fontWeight = 'bolder';
+        allHighlightedItems[i].style.fontSize = '15px';
+        allHighlightedItems[i].style.textTransform = 'uppercase';
       }
     }
   }
-  // highlightItem(itemID)
 }
 
 function ToggleEdit(itemID) {
   let allEditItems = document.getElementsByClassName('EditItem');
+  let allExpandItems = document.getElementsByClassName('expand');
+  let allDescItems = document.getElementsByClassName('desc');
+  let allHighlightedItems = document.getElementsByClassName('isHighlighted');
   console.log(allEditItems[0], 'poopshoot')
   let toggleThis;
   for (let i = 0; i < allEditItems.length; i++) {
     if ( allEditItems[i].id == itemID ) {
       toggleThis = allEditItems[i];
       if ( toggleThis.style.display === 'block') {
-        toggleThis.style.display = 'none'
+        toggleThis.style.display = 'none';
+        allExpandItems[i].style.display = 'block';
+        allHighlightedItems[i].style.fontWeight = 'normal';
+        allHighlightedItems[i].style.fontSize = '14px';
+        allHighlightedItems[i].style.textTransform = 'none';
       } else {
         toggleThis.style.display = 'block'
+        allExpandItems[i].style.display = 'none';
+        allDescItems[i].style.display = 'none';
+        allHighlightedItems[i].style.fontWeight = 'bolder';
+        allHighlightedItems[i].style.fontSize = '15px';
+        allHighlightedItems[i].style.textTransform = 'uppercase';
       }
     }
   }
 }
 
-// function highlightItem(ID){
-//   let allCardItems = document.getElementsByClassName('card');
-//   let toggleThis;
-//   for (var i = 0; i < allCardItems.length; i++){
-//     if ( allCardItems[i].id == ID ) {
-//       console.log(allCardItems[i].task);
-//       toggleThis = allCardItems[i];
-//       if ( toggleThis.style.fontSize === '14px'){
-//         toggleThis.style.fontSize = '40px'
-//       } else {
-//         toggleThis.style.fontSize = '14px'
-//       }
-//     }
-//   }
-// }
+export const closeEdit = (itemID) => {
+  let allEditItems = document.getElementsByClassName('EditItem');
+  let allExpandItems = document.getElementsByClassName('expand');
+  let allHighlightedItems = document.getElementsByClassName('isHighlighted');
+  let toggleThis;
+
+  for (let i = 0; i < allEditItems.length; i++) {
+    if ( allEditItems[i].id == itemID ) {
+      toggleThis = allEditItems[i];
+      toggleThis.style.display = 'none';
+      allExpandItems[i].style.display = 'block';
+      allHighlightedItems[i].style.fontWeight = 'normal';
+      allHighlightedItems[i].style.fontSize = '14px';
+      allHighlightedItems[i].style.textTransform = 'none';
+    }
+  }
+}
 
 const mapStateToProps = state => {
   return {
