@@ -1,6 +1,6 @@
-import { GET_ALL_ITEMS, ADD_ITEM, DELETE_ITEM_BY_ID, EDIT_ITEM_BY_ID, REORDER_ITEM, CHANGE_ITEM_TYPE, SAVE } from '../actions/actions.js';
+import { GET_ALL_ITEMS, ADD_ITEM, DELETE_ITEM_BY_ID, EDIT_ITEM_BY_ID, REORDER_ITEM, CHANGE_ITEM_TYPE, SET_VISIBLE_TO_FALSE, SET_VISIBLE_TO_TRUE } from '../actions/actions.js';
 
-const itemReducer = (state = {poop: 'shoot', items: []}, action) => {
+const itemReducer = (state = {visible: false, items: []}, action) => {
     switch (action.type) {
         case GET_ALL_ITEMS:
             return { ...state, items: action.payload }
@@ -14,7 +14,10 @@ const itemReducer = (state = {poop: 'shoot', items: []}, action) => {
             return { ...state, items: action.payload }
         case CHANGE_ITEM_TYPE:
             return { ...state, items: action.payload }
-
+        case SET_VISIBLE_TO_TRUE:
+            return { ...state, visible: action.payload }
+        case SET_VISIBLE_TO_FALSE:
+            return { ...state, visible: action.payload }
         default:
             return state
     }

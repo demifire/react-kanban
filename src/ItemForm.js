@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './ItemForm.css';
+import './App.css';
 // import { format } from 'path';
 import { connect } from 'react-redux';
 import { addItem } from './actions/actions.js';
@@ -24,10 +25,11 @@ class ItemForm extends Component {
     this.props.dispatch(addItem(this.state, this.props.moreProps));
     const addform = document.getElementById('addform');
     addform.reset();
+    this.props.triggerClose();
   }
 
   handleChange = (e) => {
-    
+
     const target = e.target
     const value = target.value;
     const name = target.name;
@@ -42,17 +44,20 @@ class ItemForm extends Component {
 
   render() {
     return (
-      <div className="ActionItem" action="/" method="post">
+      <div className="Done padding" action="/" method="post">
       <form id="addform" onSubmit={this.handleSubmit}>
         <label> Task:
           <input onChange={this.handleChange} name="task" type="text" required/>
         </label> 
+        <br />
         <label> Description:
           <input onChange={this.handleChange} name="description" type="text" required/>
         </label>
+        <br />
         <label> Priority:
           <input onChange={this.handleChange} name="priority" type="text" required/>
         </label>
+        <br />
         <label> Type:
           <select onChange={this.handleChange} name="type">
             <option name="todo" value="Todo">To-do</option>
@@ -60,7 +65,8 @@ class ItemForm extends Component {
             <option name="done" value="Done">Done</option>
           </select>
         </label>
-        <input type="submit" value="Submit"/>
+        <br />
+        <input id="addSubmit" type="submit" value="Submit"/>
       </form>
       </div>
     )

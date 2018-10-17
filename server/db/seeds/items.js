@@ -18,7 +18,22 @@ exports.seed = function(knex, Promise) {
         priority: 'Low',
         description: 'Assigned by Jon',
         type: 'Done',
-        sortingid: 3}
+        sortingid: 3},
+        {task: 'POOOOP',     
+        priority: 'High',
+        description: 'Have to poop suuuper bad; Assigned by Renee',
+        type: 'Todo',
+        sortingid: 4},
+        {task: 'Eat Popcorn',     
+        priority: 'Medium High',
+        description: 'Is that one word? Assigned by Jamie',
+        type: 'Todo',
+        sortingid: 5},
+        {task: 'Build a Tree House',     
+        priority: 'High',
+        description: 'Make it cool; Assigned by Chaz',
+        type: 'Doing',
+        sortingid: 6}
       ]);
     });
 };

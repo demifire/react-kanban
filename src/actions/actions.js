@@ -6,6 +6,8 @@ export const DELETE_ITEM_BY_ID = 'DELETE_ITEM_BY_ID';
 export const EDIT_ITEM_BY_ID = 'EDIT_ITEM_BY_ID';
 export const REORDER_ITEM = 'REORDER_ITEM';
 export const CHANGE_ITEM_TYPE = 'CHANGE_ITEM_TYPE';
+export const SET_VISIBLE_TO_TRUE = 'SET_VISIBLE_TO_TRUE'
+export const SET_VISIBLE_TO_FALSE = 'SET_VISIBLE_TO_FALSE'
 
 let cache;
 
@@ -53,11 +55,11 @@ export const addItem = (item) => {
     }
   }
 
-  export const deleteItemByIdAction = (item) => {
+  export const deleteItemByIdAction = (item, currentCache) => {
     
     console.log('ACTION: Delete Item')
     const index = cache.findIndex(element => element.sortingid === item.sortingid);
-    cache.splice(index, 1);
+    cache[index].type = false;
     cache = [...cache];
     for ( let i = 0; i < cache.length; i++ ) {
         cache[i].sortingid = i+1;
@@ -65,18 +67,10 @@ export const addItem = (item) => {
 
     axios.delete('/:id', { data: { item } })
         .then( response => {
-          console.log('DELETE response', response.data)
+          console.log('DELETE response', response.data);
         })
         .catch( err => {
           console.log('err in addItem action axios call', err)
-        })
-
-    axios.put('/index', { cache } )
-        .then( response => {
-            console.log('DELETE response', response.data)
-        })
-        .catch( err => {
-            console.log('err in addItem action axios call', err)
         })
 
     return dispatch => {
@@ -220,3 +214,15 @@ export const addItem = (item) => {
 //         dispatch({type: SAVE, payload: cache})
 //     }  
 //   }
+
+export const setVisibleTrue = () => {
+    return dispatch => {
+        dispatch({type: SET_VISIBLE_TO_TRUE, payload: true } )
+    } 
+}
+
+export const setVisibleFalse = () => {
+    return dispatch => {
+        dispatch({type: SET_VISIBLE_TO_FALSE, payload: false } )
+    } 
+}

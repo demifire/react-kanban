@@ -47,14 +47,15 @@ class ItemEdit extends Component {
     return (
       <div id={this.state.id} className="EditItem" action="/:id" method="put">
       <form id="editform" className="EditForm" onSubmit={this.handleSubmit}>
+      <br />
         <label> 
           <input className="input" value={this.state.task} onChange={this.handleChange} name="task" type="text"/>
         </label> 
-        <label> 
-          <input className="input" value={this.state.description} onChange={this.handleChange} name="description" type="text"/>
-        </label>
         <label>
           <input className="input" value={this.state.priority} onChange={this.handleChange} name="priority" type="text"/>
+        </label>
+        <label> 
+          <input className="input" value={this.state.description} onChange={this.handleChange} name="description" type="text"/>
         </label>
         <input className="noshow" type="submit" value="Submit"/>
       </form>

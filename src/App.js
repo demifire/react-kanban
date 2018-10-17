@@ -6,13 +6,17 @@ import ItemEdit from './EditItem.js';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { getAllItems, deleteItemByIdAction, reorderItem, changeItemType } from './actions/actions.js'
+import { getAllItems, deleteItemByIdAction, reorderItem, changeItemType, setVisibleTrue, setVisibleFalse } from './actions/actions.js'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGhost } from '@fortawesome/free-solid-svg-icons'
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons'
 import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
+import Rodal from 'rodal';
+
+// include styles
+import 'rodal/lib/rodal.css';
 
 library.add(faEdit)
 library.add(faCoffee)
@@ -102,6 +106,15 @@ class App extends Component {
       Done: 'items',
   };
   
+  show = () => {
+    this.props.dispatch(setVisibleTrue());
+    // this.setState({ visible: true });
+  }
+
+  hide = () => {
+    this.props.dispatch(setVisibleFalse());
+    // this.setState({ visible: false });
+  }
 
   getList = id => this.state[this.id2List[id]];
 
@@ -273,10 +286,14 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 className="title-left">KANBAN</h1>
-          <p className="title-right" onClick={ () => {console.log('this works')}}><span id="annoying">+</span><span id="enlarge">+</span> NEW TASK</p>
+          <h1 className="title-left">KANBAN</h1><div>
+          <p className="title-right" onClick={this.show.bind(this)}><span id="annoying">+</span><span id="enlarge">+</span> NEW TASK</p>
+
+                <Rodal animation='door' duration='800' visible={this.props.items.visible} onClose={this.hide.bind(this)}>
+                    <div className="shortDiv" ><ItemForm triggerClose={this.hide.bind(this)} addItem={this.addItem}/></div>
+                </Rodal>
+            </div>
         </header>
-        <div className="App-wrapper">
         <div className="App-content">
         <DragDropContext onDragEnd={this.onDragEnd}>
         <ul className="ass">
@@ -324,8 +341,44 @@ class App extends Component {
             </ul>
             </DragDropContext>
         </div>
-        <br></br>
-        <ItemForm addItem={this.addItem}/>
+        <div className="App-content2">
+        <DragDropContext onDragEnd={this.onDragEnd}>
+        <ul className="ass short">
+                <Droppable>
+                    {(provided, snapshot) => (
+                        <div className="short"
+                            ref={provided.innerRef}
+                            style={getListStyle(snapshot.isDraggingOver)}>
+                            {provided.placeholder}
+                        </div>
+                    )}
+                </Droppable>
+                </ul>
+                <hr className="border" />
+                <ul className="short">
+                <Droppable>
+                    {(provided, snapshot) => (
+                        <div className="short"
+                            ref={provided.innerRef}
+                            style={getListStyle(snapshot.isDraggingOver)}>
+                            {provided.placeholder}
+                        </div>
+                    )}
+                </Droppable>
+                </ul>
+                <hr className="border" />
+                <ul className="short">
+                <Droppable>
+                    {(provided, snapshot) => (
+                        <div className="short"
+                            ref={provided.innerRef}
+                            style={getListStyle(snapshot.isDraggingOver)}>
+                            {provided.placeholder}
+                        </div>
+                    )}
+                </Droppable>
+            </ul>
+            </DragDropContext>
         </div>
       </div>
     );
@@ -353,7 +406,7 @@ function TestThis1(props) {
                 <span className="expand" onClick={ () => GetDescription(item.sortingid)}>[ Expand ]</span>
                 <span className="isHighlighted">{item.task}</span>
                 <span onClick={ () => ToggleEdit(item.id) } className="edit"><FontAwesomeIcon className="edit2" icon="edit" /></span>
-                <span onClick={ () => props.deleteItemById(item)} className="x">x</span>
+                <span onClick={ () => props.deleteItemById(item, props.items.items)} className="x">x</span>
                 <div id={item.sortingid} className="desc"><br /><span className='bold'>Priority: </span>{item.priority}<br/>{item.description}<span className="showless" onClick={ () => GetDescription(item.sortingid)}>[ Show Less ]</span></div>
                 <ItemEdit currentCache={props.items.items} item={item}/></div>
         )}
@@ -436,7 +489,7 @@ function GetDescription(itemID) {
       } else {
         toggleThis.style.display = 'block';
         allExpandItems[i].style.display = 'none';
-        allHighlightedItems[i].style.fontWeight = 'bolder';
+        allHighlightedItems[i].style.fontWeight = 'bold';
         allHighlightedItems[i].style.fontSize = '15px';
         allHighlightedItems[i].style.textTransform = 'uppercase';
       }
@@ -464,7 +517,7 @@ function ToggleEdit(itemID) {
         toggleThis.style.display = 'block'
         allExpandItems[i].style.display = 'none';
         allDescItems[i].style.display = 'none';
-        allHighlightedItems[i].style.fontWeight = 'bolder';
+        allHighlightedItems[i].style.fontWeight = 'bold';
         allHighlightedItems[i].style.fontSize = '15px';
         allHighlightedItems[i].style.textTransform = 'uppercase';
       }
