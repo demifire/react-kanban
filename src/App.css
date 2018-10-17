@@ -299,3 +299,32 @@ ul {
   color: rgb(92, 92, 92) !important;
   border: 1px solid rgb(135, 135, 135) !important; 
 }
+
+#addSubmit:hover {
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.title-right-plus {
+  font-size: 13px;
+  /* color: black; */
+  text-align: right;
+  position: absolute;
+  margin-left: 90%;
+  margin-top: -24px;
+  padding: 6px;
+  color: rgba(255, 255, 255, 0.9) !important;
+  cursor: pointer;
+}
+
+.title-right-minus {
+  font-size: 13px;
+  /* color: black; */
+  text-align: right;
+  position: absolute;
+  margin-left: 88.5%;
+  margin-top: -24px;
+  padding: 6px;
+  color: rgba(255, 255, 255, 0.9) !important;
+  cursor: pointer;
+}

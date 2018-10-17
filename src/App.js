@@ -82,7 +82,7 @@ const getListStyle = isDraggingOver => ({
     overflow: 'auto',
     padding: grid,
     width: 300,
-    height: 400
+    height: 530
 });
 
 class App extends Component {
@@ -288,7 +288,8 @@ class App extends Component {
         <header className="App-header">
           <h1 className="title-left">KANBAN</h1><div>
           <p className="title-right" onClick={this.show.bind(this)}><span id="annoying">+</span><span id="enlarge">+</span> NEW TASK</p>
-
+          <span className="title-right-minus" onClick={ () => {for (let i = 1; i < this.props.items.items.length+1; i++) {ToggleOff(i)}} }>-</span>
+          <span className="title-right-plus" onClick={ () => {for (let i = 1; i < this.props.items.items.length+1; i++) {ToggleAll(i)}} }>+</span>
                 <Rodal animation='door' duration='800' visible={this.props.items.visible} onClose={this.hide.bind(this)}>
                     <div className="shortDiv" ><ItemForm triggerClose={this.hide.bind(this)} addItem={this.addItem}/></div>
                 </Rodal>
@@ -334,45 +335,6 @@ class App extends Component {
                             ref={provided.innerRef}
                             style={getListStyle(snapshot.isDraggingOver)}>
                             <TestThis3 props={this.props} deleteItemById={this.deleteItemById} items={this.props.items}/> 
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
-            </ul>
-            </DragDropContext>
-        </div>
-        <div className="App-content2">
-        <DragDropContext onDragEnd={this.onDragEnd}>
-        <ul className="ass short">
-                <Droppable>
-                    {(provided, snapshot) => (
-                        <div className="short"
-                            ref={provided.innerRef}
-                            style={getListStyle(snapshot.isDraggingOver)}>
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
-                </ul>
-                <hr className="border" />
-                <ul className="short">
-                <Droppable>
-                    {(provided, snapshot) => (
-                        <div className="short"
-                            ref={provided.innerRef}
-                            style={getListStyle(snapshot.isDraggingOver)}>
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
-                </ul>
-                <hr className="border" />
-                <ul className="short">
-                <Droppable>
-                    {(provided, snapshot) => (
-                        <div className="short"
-                            ref={provided.innerRef}
-                            style={getListStyle(snapshot.isDraggingOver)}>
                             {provided.placeholder}
                         </div>
                     )}
@@ -497,7 +459,48 @@ function GetDescription(itemID) {
   }
 }
 
+function ToggleAll(itemID) {
+
+  let allDescItems = document.getElementsByClassName('desc');
+  let allExpandItems = document.getElementsByClassName('expand');
+  let allHighlightedItems = document.getElementsByClassName('isHighlighted');
+  let allEditItems = document.getElementsByClassName('EditItem');
+  let toggleThis;
+  for (let i = 0; i < allDescItems.length; i++) {
+    if ( allDescItems[i].id == itemID ) {
+      toggleThis = allDescItems[i];
+        toggleThis.style.display = 'block';
+        allEditItems[i].style.display = 'none';
+        allExpandItems[i].style.display = 'none';
+        allHighlightedItems[i].style.fontWeight = 'bold';
+        allHighlightedItems[i].style.fontSize = '15px';
+        allHighlightedItems[i].style.textTransform = 'uppercase';
+    }
+  }
+}
+
+function ToggleOff(itemID) {
+
+  let allDescItems = document.getElementsByClassName('desc');
+  let allExpandItems = document.getElementsByClassName('expand');
+  let allHighlightedItems = document.getElementsByClassName('isHighlighted');
+  let allEditItems = document.getElementsByClassName('EditItem');
+  let toggleThis;
+  for (let i = 0; i < allDescItems.length; i++) {
+    if ( allDescItems[i].id == itemID ) {
+      toggleThis = allDescItems[i];
+      toggleThis.style.display = 'none';
+        allEditItems[i].style.display = 'none';
+        allExpandItems[i].style.display = 'block';
+        allHighlightedItems[i].style.fontWeight = 'normal';
+        allHighlightedItems[i].style.fontSize = '14px';
+        allHighlightedItems[i].style.textTransform = 'none';
+    }
+  }
+}
+
 function ToggleEdit(itemID) {
+  
   let allEditItems = document.getElementsByClassName('EditItem');
   let allExpandItems = document.getElementsByClassName('expand');
   let allDescItems = document.getElementsByClassName('desc');
