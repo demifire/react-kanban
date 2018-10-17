@@ -5,6 +5,7 @@ export const ADD_ITEM = 'ADD_ITEM';
 export const DELETE_ITEM_BY_ID = 'DELETE_ITEM_BY_ID';
 export const EDIT_ITEM_BY_ID = 'EDIT_ITEM_BY_ID';
 export const REORDER_ITEM = 'REORDER_ITEM';
+export const CHANGE_ITEM_TYPE = 'CHANGE_ITEM_TYPE';
 
 let cache;
 
@@ -28,10 +29,11 @@ export const addItem = (item) => {
 
     console.log('ACTION: addItem',  item);
     cache = [...cache, item];
-    item.sortingid = cache.length;
+
     for ( let i = 0; i < cache.length; i++ ) {
         cache[i].sortingid = i+1;
     }
+
     axios.post('/', item)
     .then( response => {
       console.log('response', response.data)
@@ -67,6 +69,14 @@ export const addItem = (item) => {
         })
         .catch( err => {
           console.log('err in addItem action axios call', err)
+        })
+
+    axios.put('/index', { cache } )
+        .then( response => {
+            console.log('DELETE response', response.data)
+        })
+        .catch( err => {
+            console.log('err in addItem action axios call', err)
         })
 
     return dispatch => {
@@ -152,3 +162,25 @@ export const addItem = (item) => {
     }
   }
   
+  export const changeItemType = (result) => {
+  
+    console.log(result, 'result');
+    console.log(cache, 'this is the current cache');
+    let sourceArr = cache.filter(item => item.type === result.source.droppableId)
+    let changeType = sourceArr[result.source.index]
+    changeType.type = result.destination.droppableId;
+
+    const item = changeType;
+  
+    axios.put('/:id', { item })
+    .then( response => {
+      console.log('Edit response', response.data)
+    })
+    .catch( err => {
+      console.log('err in addItem action axios call', err)
+    })
+  
+    return dispatch => {
+        dispatch({type: CHANGE_ITEM_TYPE, payload: cache})
+    } 
+  }

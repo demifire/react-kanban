@@ -6,7 +6,7 @@ import ItemEdit from './EditItem.js';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { getAllItems, deleteItemByIdAction, reorderItem } from './actions/actions.js'
+import { getAllItems, deleteItemByIdAction, reorderItem, changeItemType } from './actions/actions.js'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGhost } from '@fortawesome/free-solid-svg-icons'
@@ -27,20 +27,6 @@ const getItems = (count, offset = 0) =>
         id: `item-${k + offset}`,
         content: `item ${k + offset}${k + offset >= 10 ? foo : ''}`
     }));
-
-/**
-* Moves an item from one list to another list.
-*/
-const move = (startIndex, endIndex, source, destination, actualID, list) => {
-
-  let result = Array.from(list);
-  
-    let changeType = result.find( result => result.id === actualID);
-    changeType.type = destination.droppableId;
-  
-  
-    return result; 
-  };
 
 const grid = 8;
 
@@ -153,14 +139,8 @@ class App extends Component {
 
           // this.setState(state, console.log(state, ' DIS IS DA STATE !!!!!!!!!!'));
       } else {
-          const result = move(
-              source.index,
-              result,
-              destination.index,
-              source,
-              destination,
-              actualId,
-              list
+          this.move(
+              result
           );
 
         // let state = { result };
@@ -234,6 +214,22 @@ class App extends Component {
   // return result;
 
 };
+
+/**
+* Moves an item from one list to another list.
+*/
+  move = (result) => {
+
+    this.props.dispatch(changeItemType(result));
+
+  // let result = Array.from(list);
+  
+  //   let changeType = result.find( result => result.id === actualID);
+  //   changeType.type = destination.droppableId;
+  
+  
+  //   return result; 
+  };
 
   componentDidMount() {
     this.updateStateFromDb();

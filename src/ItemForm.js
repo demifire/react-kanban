@@ -10,7 +10,8 @@ class ItemForm extends Component {
     this.state = {
       task: null,
       description: null,
-      type: 'Todo'
+      type: 'Todo',
+      currentNum: 1
     }
   }
 
@@ -21,6 +22,7 @@ class ItemForm extends Component {
     e.preventDefault()
     console.log('SUBMITTED!!!!', this.state);
     this.props.dispatch(addItem(this.state));
+    this.state.currentNum++;
   }
 
   handleChange = (e) => {

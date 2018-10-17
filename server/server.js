@@ -94,6 +94,7 @@ const id = req.body.item.id;
 
 app.put( '/:id', (req, res) => {
 
+  console.log(req.body, 'shit')
   const id = parseInt(req.body.item.id);
 
   const newItem = {
@@ -122,6 +123,10 @@ app.put( '/:id', (req, res) => {
     res.json(err)
   })
 })
+
+app.put('/index', (req, res) => {[
+  console.log(req.body, 'hello? holy motha fuck you"re a piece of crap that #@$@#$#@$@#$@#$@#$234')
+]})
 
 app.listen(PORT, () => {
   console.log(`Listening on ${PORT}...`)
