@@ -21,8 +21,9 @@ class ItemForm extends Component {
 
     e.preventDefault()
     console.log('SUBMITTED!!!!', this.state);
-    this.props.dispatch(addItem(this.state));
-    this.state.currentNum++;
+    this.props.dispatch(addItem(this.state, this.props.moreProps));
+    const addform = document.getElementById('addform');
+    addform.reset();
   }
 
   handleChange = (e) => {
@@ -41,7 +42,7 @@ class ItemForm extends Component {
   render() {
     return (
       <div className="ActionItem" action="/" method="post">
-      <form onSubmit={this.handleSubmit}>
+      <form id="addform" onSubmit={this.handleSubmit}>
         <label> Task:
           <input onChange={this.handleChange} name="task" type="text" required/>
         </label> 

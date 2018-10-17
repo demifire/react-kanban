@@ -23,6 +23,8 @@ class ItemEdit extends Component {
     e.preventDefault()
     console.log('SUBMITTED!!!!', this.state);
     this.props.dispatch(editItem(this.state));
+    const editform = document.getElementById('editform');
+    editform.reset();
   }
 
   handleChange = (e) => {
@@ -41,7 +43,7 @@ class ItemEdit extends Component {
   render() {
     return (
       <div id={this.state.id} className="EditItem" action="/:id" method="put">
-      <form className="EditForm" onSubmit={this.handleSubmit}>
+      <form id="editform" className="EditForm" onSubmit={this.handleSubmit}>
         <label> Task:
           <input className="input" onChange={this.handleChange} name="task" type="text"/>
         </label> 

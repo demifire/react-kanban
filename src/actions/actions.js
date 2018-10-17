@@ -36,7 +36,7 @@ export const addItem = (item) => {
 
     axios.post('/', item)
     .then( response => {
-      console.log('response', response.data)
+      console.log('response', response.data);
     })
     .catch( err => {
       console.log('err in addItem action axios call', err)
