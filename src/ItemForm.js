@@ -60,9 +60,9 @@ class ItemForm extends Component {
         <br />
         <label> Type:
           <select onChange={this.handleChange} name="type">
-            <option name="todo" value="Todo">To-do</option>
-            <option name="doing" value="Doing">Doing</option>
-            <option name="done" value="Done">Done</option>
+            <option name="todo" value="Todo">In Queue</option>
+            <option name="doing" value="Doing">In Progress</option>
+            <option name="done" value="Done">Completed</option>
           </select>
         </label>
         <br />
