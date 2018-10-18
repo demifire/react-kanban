@@ -88,19 +88,9 @@ const getListStyle = isDraggingOver => ({
 class App extends Component {
   constructor(props) {
     super(props)
-    // this.state = {
-    //   items: [],
-    //   items2: getItems(10),
-    //   selected: getItems(5, 10)
-    // }
   }
 
-  /**
-     * A semi-generic way to handle multiple lists. Matches
-     * the IDs of the droppable container to the names of the
-     * source arrays stored in the state.
-     */
-    id2List = {
+  id2List = {
       Todo: 'items',
       Doing: 'items',
       Done: 'items',
@@ -108,12 +98,10 @@ class App extends Component {
   
   show = () => {
     this.props.dispatch(setVisibleTrue());
-    // this.setState({ visible: true });
   }
 
   hide = () => {
     this.props.dispatch(setVisibleFalse());
-    // this.setState({ visible: false });
   }
 
   getList = id => this.state[this.id2List[id]];
@@ -121,15 +109,12 @@ class App extends Component {
   getActualList = () => this.id2List;
 
   onDragEnd = result => {
-    console.log(result, 'DIS DA RESULT ***************************')
 
       const { source, destination } = result;
       const actualId = result.draggableId;
 
       const list = this.props.items.items;
-      console.log(list, 'hello list does this work?')
 
-      // dropped outside the list
       if (!destination) {
           return;
       }
@@ -145,31 +130,10 @@ class App extends Component {
               this.props.items.items
           );
 
-          // let state = { items };
-
-          // // if (source.droppableId === 'droppable2') {
-          // //     state = { selected: items };
-          // // }
-
-          // this.setState(state, console.log(state, ' DIS IS DA STATE !!!!!!!!!!'));
       } else {
           this.move(
               result
           );
-
-        // let state = { result };
-        // console.log(state, ' DIS IS DA STATE !!!!!!!!!!')
-
-        // if (source.droppableId === 'droppable2') {
-        //     state = { selected: items };
-        // }
-
-        // this.setState(state);
-
-          // this.setState({
-          //     items2: result.droppable,
-          //     selected: result.droppable2
-          // });
       }
   };
 

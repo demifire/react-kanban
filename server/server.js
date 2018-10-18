@@ -5,10 +5,6 @@ const path = require('path')
 const Items = require('./db/models/Items.js');
 const bodyParser = require('body-parser')
 
-// parse application/x-www-form-urlencoded
-// app.use(bodyParser.urlencoded({ extended: false }))
- 
-// parse application/json
 app.use(bodyParser.json())
 
 app.use(express.static(path.join(__dirname, '../build')))
@@ -18,27 +14,6 @@ app.get('/', () => {
 })
 
 app.get('/items', (req, res) => {
-  // res.json({
-  //   items: [{
-  //       id: 1,
-  //       name: 'A Large Healing Potion',
-  //       weight: 0.1,
-  //       type: 'consumable'
-  //     },
-  //     {
-  //       id: 2,
-  //       name: 'Wirts Leg',
-  //       weight: 10,
-  //       type: 'weapon'
-  //     },
-  //     {
-  //       id: 3,
-  //       name: 'Dreamwalker Spaulders',
-  //       weight: 2,
-  //       type: 'armor'
-  //     }
-  //   ]
-  // })
   Items
     .fetchAll()
     .then( items => {
@@ -51,7 +26,6 @@ app.get('/items', (req, res) => {
 
 app.post( '/', (req, res) => {
   const newItem = {
-    // id: req.body.id,
     task: req.body.task,
     description: req.body.description,
     priority: req.body.priority,
@@ -64,7 +38,6 @@ app.post( '/', (req, res) => {
     .save()
     .then((data) => {
       return Items.fetchAll()
-      console.log(data, 'data FUCK')
     })
     .then ( newItems => {
       res.json(newItems.serialize())
@@ -77,17 +50,13 @@ app.post( '/', (req, res) => {
 
 app.put('/save', (req, res) => {
 
-  console.log(req.body, 'HELLO???')
   let cache = req.body.currentCache;
   let updateSort = {};
   let id;
   
-  console.log(cache, 'soup sop')
   for ( let i = 0; i < cache.length; i++ ) {
     id = cache[i].id;
     updateSort.sortingid = i+1;
-
-    console.log(id, updateSort.sortingid, 'what is happening here?')
 
     Items
       .where({id})
@@ -95,12 +64,6 @@ app.put('/save', (req, res) => {
       .then(update => {
         update.save(updateSort)
       })
-      // .then((data) => {
-      //   return Items.fetchAll()
-      // })
-      // .then ( newItems => {
-      //   res.json(newItems.serialize())
-      // })
       .catch(err => {
         console.log('error', err)
         res.json(err)
@@ -131,17 +94,14 @@ newItem.type = false;
 
 app.put( '/:id', (req, res) => {
 
-  console.log(req.body, 'shit')
   const id = parseInt(req.body.item.id);
 
   const newItem = {
-    // id: req.body.item.id,
     task: req.body.item.task,
     description: req.body.item.description,
     priority: req.body.item.priority,
     type: req.body.item.type
   }
-  console.log(req.body.item, 'this is getting annoying' )
 
   Items
   .where({id})
