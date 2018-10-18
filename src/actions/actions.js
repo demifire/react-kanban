@@ -41,14 +41,14 @@ export const addItem = (item) => {
       console.log('response', response.data);
     })
     .catch( err => {
-      console.log('err in addItem action axios call', err)
-      if ( err ) {
-        const index = cache.findIndex(element => element.id === item.id);
-        cache.splice(index, 1);
-        return dispatch => {
-            dispatch({type: ADD_ITEM, payload: cache})
-        }
-      }
+    //   console.log('err in addItem action axios call', err)
+    //   if ( err ) {
+    //     const index = cache.findIndex(element => element.id === item.id);
+    //     cache.splice(index, 1);
+    //     return dispatch => {
+    //         dispatch({type: ADD_ITEM, payload: cache})
+    //     }
+    //   }
     });
     return dispatch => {
         dispatch({type: ADD_ITEM, payload: cache})

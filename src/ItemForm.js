@@ -17,8 +17,6 @@ class ItemForm extends Component {
   }
 
   handleSubmit = (e) => {
-    // e.preventDefault();
-    // this.props.addItem(this.state)
 
     e.preventDefault()
     console.log('SUBMITTED!!!!', this.state);

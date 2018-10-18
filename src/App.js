@@ -14,6 +14,7 @@ import { faPencilAlt } from '@fortawesome/free-solid-svg-icons'
 import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import Rodal from 'rodal';
+import { BrowserRouter as Route, Router, Link } from 'react-router-dom';
 
 // include styles
 import 'rodal/lib/rodal.css';
@@ -250,7 +251,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 className="title-left">KANBAN</h1><div>
+          <h1 id="Home" onClick={console.log('uhh make this redirect to home?')} className="title-left">KANBAN</h1><div>
           <p className="title-right" onClick={this.show.bind(this)}><span id="annoying">+</span><span id="enlarge">+</span> NEW TASK</p>
           <span className="title-right-minus" onClick={ () => {for (let i = 1; i < this.props.items.items.length+1; i++) {ToggleOff(i)}} }>-</span>
           <span className="title-right-plus" onClick={ () => {for (let i = 1; i < this.props.items.items.length+1; i++) {ToggleAll(i)}} }>+</span>
