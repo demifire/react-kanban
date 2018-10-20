@@ -1,101 +1,24 @@
 import React, { Component } from 'react';
-import './App.css';
-import { getItemsFromFakeXHR, addItemToFakeXHR, deleteItemByIdFromFakeXHR } from './db/inventory.db';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { connect } from 'react-redux';
+import { getAllItems, deleteItemByIdAction, reorderItem, changeItemType, setVisibleTrue, setVisibleFalse } from './actions/actions.js';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import Rodal from 'rodal';
 import ItemForm from './ItemForm.js';
 import ItemEdit from './EditItem.js';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import axios from 'axios';
-import { connect } from 'react-redux';
-import { getAllItems, deleteItemByIdAction, reorderItem, changeItemType, setVisibleTrue, setVisibleFalse } from './actions/actions.js'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGhost } from '@fortawesome/free-solid-svg-icons'
-import { faPencilAlt } from '@fortawesome/free-solid-svg-icons'
-import { faCoffee } from '@fortawesome/free-solid-svg-icons'
-import { faEdit } from '@fortawesome/free-solid-svg-icons'
-import Rodal from 'rodal';
-import { BrowserRouter as Route, Router, Link } from 'react-router-dom';
-
-// include styles
+import './App.css';
 import 'rodal/lib/rodal.css';
 
-library.add(faEdit)
-library.add(faCoffee)
-library.add(faGhost)
-library.add(faPencilAlt)
-
-// fake data generator
-const foo =
-    'lorem ipsum dolor sit amet consectutrtpoyu sklhfdlkfh dklfh lkdhflhdflkh dlkfhdlkhflkd fldhflh';
-const getItems = (count, offset = 0) =>
-    Array.from({ length: count }, (v, k) => k).map(k => ({
-        id: `item-${k + offset}`,
-        content: `item ${k + offset}${k + offset >= 10 ? foo : ''}`
-    }));
-
-const grid = 8;
-
-const getItemStyle1 = (isDragging, draggableStyle) => ({
-    // some basic styles to make the items look a bit nicer
-    userSelect: 'none',
-    padding: grid * 2,
-    margin: `0 0 ${grid}px 0`,
-
-    // change background colour if dragging
-    
-    background: isDragging ? 'lightblue' : 'rgb(253, 241, 222)',
-
-    // styles we need to apply on draggables
-    ...draggableStyle
-});
-
-const getItemStyle2 = (isDragging, draggableStyle) => ({
-  // some basic styles to make the items look a bit nicer
-  userSelect: 'none',
-  padding: grid * 2,
-  margin: `0 0 ${grid}px 0`,
-
-  // change background colour if dragging
-  
-  background: isDragging ? 'lightblue' : 'rgb(229, 253, 204)',
-
-  // styles we need to apply on draggables
-  ...draggableStyle
-});
-
-const getItemStyle3 = (isDragging, draggableStyle) => ({
-  // some basic styles to make the items look a bit nicer
-  userSelect: 'none',
-  padding: grid * 2,
-  margin: `0 0 ${grid}px 0`,
-
-  // change background colour if dragging
-  
-  background: isDragging ? 'lightblue' : 'rgb(246, 247, 250)',
-
-  // styles we need to apply on draggables
-  ...draggableStyle
-});
-
-const getListStyle = isDraggingOver => ({
-    border: isDraggingOver ? '1px solid lightblue' : '1px solid white',
-    // background: isDraggingOver ? 'lightblue' : 'white',
-    overflow: 'auto',
-    padding: grid,
-    width: 300,
-    height: 530
-});
+library.add(faEdit);
+library.add(faPencilAlt);
 
 class App extends Component {
   constructor(props) {
     super(props)
   }
-
-  id2List = {
-      Todo: 'items',
-      Doing: 'items',
-      Done: 'items',
-  };
   
   show = () => {
     this.props.dispatch(setVisibleTrue());
@@ -105,149 +28,44 @@ class App extends Component {
     this.props.dispatch(setVisibleFalse());
   }
 
-  getList = id => this.state[this.id2List[id]];
-
-  getActualList = () => this.id2List;
-
   onDragEnd = result => {
 
-      const { source, destination } = result;
-      const actualId = result.draggableId;
+    const { source, destination } = result;
+    const list = this.props.items.items;
 
-      const list = this.props.items.items;
+    if (!destination) {
+      return;
+    };
 
-      if (!destination) {
-          return;
-      }
-
-      if (source.droppableId === destination.droppableId) {
-        this.reorder(
-              result,
-              list,
-              source.index,
-              destination.index,
-              destination,
-              source,
-              this.props.items.items
-          );
-
-      } else {
-          this.move(
-              result
-          );
-      }
+    if (source.droppableId === destination.droppableId) {
+      this.reorder(result, list, source.index, destination.index, destination, source, this.props.items.items);
+    } else {
+      this.move(result);
+    };
   };
 
-  // a little function to help us with reordering the result
   reorder = ( result, list, startIndex, endIndex, destination, source, currentCache ) => {
-
-  // console.log(props, 'what?!?!?!?!?');
   this.props.dispatch(reorderItem( result, list, startIndex, endIndex, destination, source, currentCache ));
+  };
 
-  // let result = Array.from(list);
-
-  // console.log(destination, 'what"s destination again??')
-  // let fak = result.filter(item => item.type === destination.droppableId);
-  // console.log(fak, ' FAK DIS }HOLY FUK')
-  // let temp = fak[endIndex].id-1;
-  // let temp2 = fak[startIndex].id-1;
-  // let tempId = fak[endIndex].id;
-  // let temp2Id = fak[startIndex].id;
-
-  // // Swap start id with end id
-  // fak[startIndex].id = tempId; 
-
-  // // Splice out the starting item from the array
-  // let [removed] = result.splice(temp2, 1);
-
-  // // Insert it @ temp
-  // result.splice(temp, 0, removed)
-
-  // // Reindex array 
-
-  // for (let i = 0; i<result.length; i++) {
-  //   result[i].id = i+1
-  //   // console.log(result[i].task, 'new id is ' + result[i].id)
-  // }
-
-  // function checkDuplicateInObject(propertyName, inputArray) {
-  //   let seenDuplicate = false,
-  //       testObject = {};
-  
-  //   inputArray.map(function(item) {
-  //     let itemPropertyName = item[propertyName];    
-  //     if (itemPropertyName in testObject) {
-  //       seenDuplicate = true;
-  //     }
-  //     else {
-  //       testObject[itemPropertyName] = item;
-  //       delete item.duplicate;
-  //     }
-  //   });
-  
-  //   return seenDuplicate;
-  // }
-
-  // // console.log(checkDuplicateInObject('id', result), 'dis da check duplicate stuff brh')
-
-  // return result;
-
-};
-
-/**
-* Moves an item from one list to another list.
-*/
   move = (result) => {
-
     this.props.dispatch(changeItemType(result));
-
-  // let result = Array.from(list);
-  
-  //   let changeType = result.find( result => result.id === actualID);
-  //   changeType.type = destination.droppableId;
-  
-  
-  //   return result; 
   };
 
   componentDidMount() {
     this.updateStateFromDb();
-  }
+  };
 
   updateStateFromDb = () => {
-    this.props.dispatch(getAllItems())
-    console.log(this.props, 'dispatch');
-
-  }
+    this.props.dispatch(getAllItems());
+  };
 
   deleteItemById = (item) => {
-
-    console.log('DIS FIRED FUCK A')
-    this.props.dispatch(deleteItemByIdAction(item))
-    console.log('DIS FIRED SILVER LINING')
-    // deleteItemByIdFromFakeXHR(itemId)
-    // const itemIdx = this.state.items.findIndex( item => item.id === itemId);
-    // if (itemIdx === -1) {
-    //   console.log('Error: Item not found. Item could not be deleted.')
-    // } else {
-    //   this.state.items = this.state.items.filter( item => {
-    //     return item.id !== itemId
-    //   })
-    // }
-
-    // reindex?
-
-    // for (let i = 0; i<this.state.items.length; i++) {
-    //   this.state.items[i].id = i+1;
-    //   // console.log(this.state.items[i].task, 'new id is ' + this.state.items[i].id)
-    // }
-    // this.setState( this.state.items )
-  }
+    this.props.dispatch(deleteItemByIdAction(item));
+  };
 
 
   render() {
-    // const { items } = this.props.items
-
     return (
       <div className="App">
         <header className="App-header">
@@ -262,14 +80,14 @@ class App extends Component {
         </header>
         <div className="App-content">
         <DragDropContext onDragEnd={this.onDragEnd}>
-        <ul className="ass">
-        <h1 className="myh1">IN QUEUE</h1>
+        <ul>
+        <h1 className="taskTitle">IN QUEUE</h1>
                 <Droppable droppableId="Todo">
                     {(provided, snapshot) => (
                         <div 
                             ref={provided.innerRef}
                             style={getListStyle(snapshot.isDraggingOver)}>
-                            <TestThis1 props={this.props} deleteItemById={this.deleteItemById} items={this.props.items}/> 
+                            <Todo props={this.props} deleteItemById={this.deleteItemById} items={this.props.items}/> 
                             {provided.placeholder}
                             {/* {console.log(provided, ' this is provided')}
                             {console.log(snapshot, 'this is a snapshop')} */}
@@ -279,13 +97,13 @@ class App extends Component {
                 </ul>
                 <hr className="border" />
                 <ul>
-        <h1 className="myh1">IN PROGRESS</h1>
+        <h1 className="taskTitle">IN PROGRESS</h1>
                 <Droppable droppableId="Doing">
                     {(provided, snapshot) => (
                         <div
                             ref={provided.innerRef}
                             style={getListStyle(snapshot.isDraggingOver)}>
-                            <TestThis2 props={this.props} deleteItemById={this.deleteItemById} items={this.props.items}/>
+                            <Doing props={this.props} deleteItemById={this.deleteItemById} items={this.props.items}/>
                             {provided.placeholder}
                         </div>
                     )}
@@ -293,13 +111,13 @@ class App extends Component {
                 </ul>
                 <hr className="border" />
                 <ul>
-        <h1 className="myh1">COMPLETED</h1>
+        <h1 className="taskTitle">COMPLETED</h1>
                 <Droppable droppableId="Done">
                     {(provided, snapshot) => (
                         <div
                             ref={provided.innerRef}
                             style={getListStyle(snapshot.isDraggingOver)}>
-                            <TestThis3 props={this.props} deleteItemById={this.deleteItemById} items={this.props.items}/> 
+                            <Done props={this.props} deleteItemById={this.deleteItemById} items={this.props.items}/> 
                             {provided.placeholder}
                         </div>
                     )}
@@ -312,94 +130,165 @@ class App extends Component {
   }
 }
 
-function TestThis1(props) {
-  console.log(props, 'this is props again but from test 1')
-  return props.items.items.filter(item => item.type === 'Todo').map((item, index) => (
-    <li className="task">
-    <Draggable
-        key={item.id}
-        draggableId={item.id}
-        index={index}>
-        {(provided, snapshot) => (
-            <div
-                className="Todo card"
-                ref={provided.innerRef}
-                {...provided.draggableProps}
-                {...provided.dragHandleProps}
-                style={getItemStyle1(
-                    snapshot.isDragging,
-                    provided.draggableProps.style
-                )}>
-                <span className="expand" onClick={ () => GetDescription(item.sortingid)}>[ Expand ]</span>
-                <span className="isHighlighted">{item.task}</span>
-                <span onClick={ () => ToggleEdit(item.id) } className="edit"><FontAwesomeIcon className="edit2" icon="edit" /></span>
-                <span onClick={ () => props.deleteItemById(item, props.items.items)} className="x">x</span>
-                <div id={item.sortingid} className="desc"><br /><span className='bold'>Priority: </span>{item.priority}<br/>{item.description}<span className="showless" onClick={ () => GetDescription(item.sortingid)}>[ Show Less ]</span></div>
-                <ItemEdit currentCache={props.items.items} item={item}/></div>
-        )}
-    </Draggable></li>
-))
+class Todo extends Component {
+  constructor(props) {
+    super(props)
+  }
+
+  render() {
+    return (
+      this.props.props.items.items.filter(item => item.type === 'Todo').map((item, index) => (
+        <li className="task">
+        <Draggable
+            key={item.id}
+            draggableId={item.id}
+            index={index}>
+            {(provided, snapshot) => (
+                <div
+                    className="Todo card"
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    style={TodoStyle(
+                        snapshot.isDragging,
+                        provided.draggableProps.style
+                    )}>
+                    <span className="expand" onClick={ () => GetDescription(item.sortingid)}>[ Expand ]</span>
+                    <span className="isHighlighted">{item.task}</span>
+                    <span onClick={ () => ToggleEdit(item.id) } className="edit"><FontAwesomeIcon className="edit2" icon="edit" /></span>
+                    <span onClick={ () => this.props.props.deleteItemById(item, this.props.props.items.items)} className="x">x</span>
+                    <div id={item.sortingid} className="desc"><br /><span className='bold'>Priority: </span>{item.priority}<br/>{item.description}<span className="showless" onClick={ () => GetDescription(item.sortingid)}>[ Show Less ]</span></div>
+                    <ItemEdit currentCache={this.props.props.items.items} item={item}/></div>
+            )}
+        </Draggable></li>
+    ))
+    );
+  }
 }
 
-function TestThis2(props) {
-  return props.items.items.filter(item => item.type === 'Doing').map((item, index) => (
-    <li className="task">
-    <Draggable
-        key={item.id}
-        draggableId={item.id}
-        index={index}>
-        {(provided, snapshot) => (
-            <div
-                className="Doing card"
-                ref={provided.innerRef}
-                {...provided.draggableProps}
-                {...provided.dragHandleProps}
-                style={getItemStyle2(
-                    snapshot.isDragging,
-                    provided.draggableProps.style
-                )}>
-                <span className="expand" onClick={ () => GetDescription(item.sortingid)}>[ Expand ]</span>
-                <span className="isHighlighted">{item.task}</span>
-                <span onClick={ () => ToggleEdit(item.id) } className="edit"><FontAwesomeIcon className="edit2" icon="edit" /></span>
-                <span onClick={ () => props.deleteItemById(item)} className="x">x</span>
-                <div id={item.sortingid} className="desc"><br /><span className='bold'>Priority: </span>{item.priority}<br/>{item.description}<span className="showless" onClick={ () => GetDescription(item.sortingid)}>[ Show Less ]</span></div>
-                <ItemEdit currentCache={props.items.items} item={item}/>
-                </div>
-        )}
-    </Draggable></li>
-))
+class Doing extends Component {
+  constructor(props) {
+    super(props)
+  }
+
+  render() {
+    return (
+      this.props.props.items.items.filter(item => item.type === 'Doing').map((item, index) => (
+        <li className="task">
+        <Draggable
+            key={item.id}
+            draggableId={item.id}
+            index={index}>
+            {(provided, snapshot) => (
+                <div
+                    className="Doing card"
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    style={DoingStyle(
+                        snapshot.isDragging,
+                        provided.draggableProps.style
+                    )}>
+                    <span className="expand" onClick={ () => GetDescription(item.sortingid)}>[ Expand ]</span>
+                    <span className="isHighlighted">{item.task}</span>
+                    <span onClick={ () => ToggleEdit(item.id) } className="edit"><FontAwesomeIcon className="edit2" icon="edit" /></span>
+                    <span onClick={ () => this.props.props.deleteItemById(item, this.props.props.items.items)} className="x">x</span>
+                    <div id={item.sortingid} className="desc"><br /><span className='bold'>Priority: </span>{item.priority}<br/>{item.description}<span className="showless" onClick={ () => GetDescription(item.sortingid)}>[ Show Less ]</span></div>
+                    <ItemEdit currentCache={this.props.props.items.items} item={item}/></div>
+            )}
+        </Draggable></li>
+    ))
+    );
+  }
 }
 
-function TestThis3(props) {
-  return props.items.items.filter(item => item.type === 'Done').map((item, index) => (
-    <li className="task">
-    {/* {console.log('AHHHAHAHSHFHASHFHASH', props)} */}
-    <Draggable
-        key={item.id}
-        draggableId={item.id}
-        index={index}>
-        {(provided, snapshot) => (
-            <div
-                className="Done card"
-                ref={provided.innerRef}
-                {...provided.draggableProps}
-                {...provided.dragHandleProps}
-                style={getItemStyle3(
-                    snapshot.isDragging,
-                    provided.draggableProps.style
-                )}><span className="expand" onClick={ () => GetDescription(item.sortingid)}>[ Expand ]</span>
-                <span className="isHighlighted">{item.task}</span>
-                <span onClick={ () => ToggleEdit(item.id) } className="edit"><FontAwesomeIcon className="edit2" icon="edit" /></span>
-                <span onClick={ () => props.deleteItemById(item)} className="x">x</span>
-                <div id={item.sortingid} className="desc"><br /><span className='bold'>Priority: </span>{item.priority}<br/>{item.description}<span className="showless" onClick={ () => GetDescription(item.sortingid)}>[ Show Less ]</span></div>
-                <ItemEdit currentCache={props.items.items} item={item}/>
-                </div>
-        )}
-    </Draggable></li>
-))
+class Done extends Component {
+  constructor(props) {
+    super(props)
+  }
+
+  render() {
+    return (
+      this.props.props.items.items.filter(item => item.type === 'Done').map((item, index) => (
+        <li className="task">
+        <Draggable
+            key={item.id}
+            draggableId={item.id}
+            index={index}>
+            {(provided, snapshot) => (
+                <div
+                    className="Done card"
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    style={DoneStyle(
+                        snapshot.isDragging,
+                        provided.draggableProps.style
+                    )}>
+                    <span className="expand" onClick={ () => GetDescription(item.sortingid)}>[ Expand ]</span>
+                    <span className="isHighlighted">{item.task}</span>
+                    <span onClick={ () => ToggleEdit(item.id) } className="edit"><FontAwesomeIcon className="edit2" icon="edit" /></span>
+                    <span onClick={ () => this.props.props.deleteItemById(item, this.props.props.items.items)} className="x">x</span>
+                    <div id={item.sortingid} className="desc"><br /><span className='bold'>Priority: </span>{item.priority}<br/>{item.description}<span className="showless" onClick={ () => GetDescription(item.sortingid)}>[ Show Less ]</span></div>
+                    <ItemEdit currentCache={this.props.props.items.items} item={item}/></div>
+            )}
+        </Draggable></li>
+    ))
+    );
+  }
 }
 
-function GetDescription(itemID) {
+export const closeEdit = (itemID) => {
+  let allEditItems = document.getElementsByClassName('EditItem');
+  let allExpandItems = document.getElementsByClassName('expand');
+  let allHighlightedItems = document.getElementsByClassName('isHighlighted');
+  let toggleThis;
+
+  for (let i = 0; i < allEditItems.length; i++) {
+    if ( allEditItems[i].id == itemID ) {
+      toggleThis = allEditItems[i];
+      toggleThis.style.display = 'none';
+      allExpandItems[i].style.display = 'block';
+      allHighlightedItems[i].style.fontWeight = 'normal';
+      allHighlightedItems[i].style.fontSize = '14px';
+      allHighlightedItems[i].style.textTransform = 'none';
+    }
+  }
+}
+
+const TodoStyle = (isDragging, draggableStyle) => ({
+  userSelect: 'none',
+  padding: 8 * 2,
+  margin: `0 0 ${8}px 0`,    
+  background: isDragging ? 'lightblue' : 'rgb(253, 241, 222)',
+  ...draggableStyle
+});
+
+const DoingStyle = (isDragging, draggableStyle) => ({
+userSelect: 'none',
+padding: 8 * 2,
+margin: `0 0 ${8}px 0`,
+background: isDragging ? 'lightblue' : 'rgb(229, 253, 204)',
+...draggableStyle
+});
+
+const DoneStyle = (isDragging, draggableStyle) => ({
+userSelect: 'none',
+padding: 8 * 2,
+margin: `0 0 ${8}px 0`,
+background: isDragging ? 'lightblue' : 'rgb(246, 247, 250)',
+...draggableStyle
+});
+
+const getListStyle = isDraggingOver => ({
+  border: isDraggingOver ? '1px solid lightblue' : '1px solid white',
+  overflow: 'auto',
+  padding: 8,
+  width: 300,
+  height: 530
+});
+
+const GetDescription = (itemID) => {
   let allDescItems = document.getElementsByClassName('desc');
   let allExpandItems = document.getElementsByClassName('expand');
   let allHighlightedItems = document.getElementsByClassName('isHighlighted');
@@ -424,7 +313,7 @@ function GetDescription(itemID) {
   }
 }
 
-function ToggleAll(itemID) {
+const ToggleAll = (itemID) => {
 
   let allDescItems = document.getElementsByClassName('desc');
   let allExpandItems = document.getElementsByClassName('expand');
@@ -444,7 +333,7 @@ function ToggleAll(itemID) {
   }
 }
 
-function ToggleOff(itemID) {
+const ToggleOff = (itemID) => {
 
   let allDescItems = document.getElementsByClassName('desc');
   let allExpandItems = document.getElementsByClassName('expand');
@@ -464,13 +353,12 @@ function ToggleOff(itemID) {
   }
 }
 
-function ToggleEdit(itemID) {
+const ToggleEdit = (itemID) => {
   
   let allEditItems = document.getElementsByClassName('EditItem');
   let allExpandItems = document.getElementsByClassName('expand');
   let allDescItems = document.getElementsByClassName('desc');
   let allHighlightedItems = document.getElementsByClassName('isHighlighted');
-  console.log(allEditItems[0], 'poopshoot')
   let toggleThis;
   for (let i = 0; i < allEditItems.length; i++) {
     if ( allEditItems[i].id == itemID ) {
@@ -493,28 +381,9 @@ function ToggleEdit(itemID) {
   }
 }
 
-export const closeEdit = (itemID) => {
-  let allEditItems = document.getElementsByClassName('EditItem');
-  let allExpandItems = document.getElementsByClassName('expand');
-  let allHighlightedItems = document.getElementsByClassName('isHighlighted');
-  let toggleThis;
-
-  for (let i = 0; i < allEditItems.length; i++) {
-    if ( allEditItems[i].id == itemID ) {
-      toggleThis = allEditItems[i];
-      toggleThis.style.display = 'none';
-      allExpandItems[i].style.display = 'block';
-      allHighlightedItems[i].style.fontWeight = 'normal';
-      allHighlightedItems[i].style.fontSize = '14px';
-      allHighlightedItems[i].style.textTransform = 'none';
-    }
-  }
-}
-
 const mapStateToProps = state => {
   return {
-    items: state,
-    lol: 'omgIJustEnteredAPropInThisComponent'
+    items: state
   }
 }
 
