@@ -1,8 +1,6 @@
 // Update with your config settings.
 require('dotenv').config({path: '../.env'})
 
-// console.log('process.env', process.env)
-
 module.exports = {
 
   development: {

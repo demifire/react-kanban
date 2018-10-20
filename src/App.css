@@ -1,3 +1,5 @@
+/* Super jank non responsive css begin */
+
 @import url('https://fonts.googleapis.com/css?family=Maven+Pro');
 @import url('https://fonts.googleapis.com/css?family=Asap|Dosis|KoHo');
 
@@ -24,7 +26,7 @@ html {
   border: 1px solid rgb(237, 235, 235) !important;
 }
 
-#annoying {
+#AddItem {
   position: absolute;
   margin-top: -4.5px;
   margin-left: -1px;
@@ -42,7 +44,7 @@ html {
   opacity: 0;
 }
 
-.title-right:hover > #annoying{ 
+.title-right:hover > #AddItem{ 
   display: block;
 }
 
@@ -123,20 +125,10 @@ body {
   color: rgb(76, 82, 90);
 }
 
-/* .ass {
- padding-left: 0px;
- height:100%;
-} */
-
 .border {
   padding: 0px;
   margin: 0px;
 }
-
-/* h1.App-title {
-  background-color: rgb(76, 82, 90);
-  padding: 0px;
-} */
 
 .App-intro {
   font-size: large;
@@ -307,7 +299,6 @@ ul {
 
 .title-right-plus {
   font-size: 13px;
-  /* color: black; */
   text-align: right;
   position: absolute;
   margin-left: 90%;
@@ -319,7 +310,6 @@ ul {
 
 .title-right-minus {
   font-size: 13px;
-  /* color: black; */
   text-align: right;
   position: absolute;
   margin-left: 88.5%;

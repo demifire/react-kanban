@@ -4,17 +4,17 @@ exports.seed = function(knex, Promise) {
     .then(function () {
       // Inserts seed entries
       return knex('items').insert([
-        {task: 'A Mana Potion',     
+        {task: 'Drink a Mana Potion',     
         priority: 'Low',
         description: 'Assigned by Jon',
         type: 'Todo',
         sortingid: 1},
-        {task: 'Staff of Light',     
+        {task: 'Wield Staff of Light',     
         priority: 'Low',
         description: 'Assigned by Jon',
         type: 'Doing',
         sortingid: 2},
-        {task: 'Shroud of the Pantheon',     
+        {task: 'Summon Shroud of the Pantheon',     
         priority: 'Low',
         description: 'Assigned by Jon',
         type: 'Done',
