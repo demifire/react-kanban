@@ -178,9 +178,7 @@ class Todo extends Component {
                   <FontAwesomeIcon className="edit2" icon="edit" />
                 </span>
 
-                <span onClick={ () => this.props.props.deleteItemById(item, this.props.props.items.items)} className="x">
-                  x
-                </span>
+                <span onClick={ () => this.props.deleteItemById(item, this.props.items.items)} className="x">x</span>
 
                 <div id={item.sortingid} className="desc">
                   <br />
@@ -237,7 +235,7 @@ class Doing extends Component {
                   <FontAwesomeIcon className="edit2" icon="edit" />
                 </span>
 
-                <span onClick={ () => this.props.props.deleteItemById(item, this.props.props.items.items)} className="x">
+                <span onClick={ () => this.props.deleteItemById(item, this.props.props.items.items)} className="x">
                   x
                 </span>
 
@@ -296,7 +294,7 @@ class Done extends Component {
                   <FontAwesomeIcon className="edit2" icon="edit" />
                 </span>
 
-                <span onClick={ () => this.props.props.deleteItemById(item, this.props.props.items.items)} className="x">
+                <span onClick={ () => this.props.deleteItemById(item, this.props.props.items.items)} className="x">
                   x
                 </span>
 
